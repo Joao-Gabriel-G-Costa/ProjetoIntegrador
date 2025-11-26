@@ -5,6 +5,12 @@
  */
 package visao;
 
+import Persistencia.DespesasDAO;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelos.classes.Despesas;
+
 /**
  *
  * @author eugeniojulio
@@ -17,8 +23,16 @@ public class TelaDespesas extends javax.swing.JFrame {
     public TelaDespesas() {
         initComponents();
         this.setLocationRelativeTo(null);
-
+        exibirDespesasNaTabela();
+        
+        //Cuidado !!!!!!!!!!!!!!!!!
+        jTableSaida.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            exibirDadosSelecionados();
+        }
+    });
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,9 +49,11 @@ public class TelaDespesas extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextFieldIdentificador = new javax.swing.JTextField();
         jTextFieldDescricao = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButtonIncluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableSaida = new javax.swing.JTable();
+        jButtonUpdate = new javax.swing.JButton();
+        jButtonExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JANELA @");
@@ -56,9 +72,20 @@ public class TelaDespesas extends javax.swing.JFrame {
 
         jLabel3.setText("DESCRIÇÃO");
 
-        jButton1.setText("Incluir");
+        jTextFieldIdentificador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldIdentificadorActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jButtonIncluir.setText("Incluir");
+        jButtonIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIncluirActionPerformed(evt);
+            }
+        });
+
+        jTableSaida.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -68,8 +95,30 @@ public class TelaDespesas extends javax.swing.JFrame {
             new String [] {
                 "Identificador", "Descrição"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTableSaida);
+
+        jButtonUpdate.setText("Atualizar");
+        jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUpdateActionPerformed(evt);
+            }
+        });
+
+        jButtonExcluir.setText("Deletar");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -79,24 +128,36 @@ public class TelaDespesas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(56, 56, 56)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(56, 56, 56)
+                                        .addComponent(jLabel1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextFieldIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldDescricao))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
+                        .addGap(16, 16, 16)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 85, Short.MAX_VALUE))
+                .addGap(0, 90, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonVoltar)
-                    .addComponent(jButton1))
-                .addGap(48, 48, 48))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonExcluir)
+                    .addComponent(jButtonUpdate)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jButtonIncluir)
+                            .addGap(48, 48, 48))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jButtonVoltar)
+                            .addGap(24, 24, 24)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,16 +168,19 @@ public class TelaDespesas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButtonIncluir))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonUpdate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonExcluir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonVoltar)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -131,19 +195,112 @@ public class TelaDespesas extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonVoltarActionPerformed
 
+    private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
+        // TODO add your handling code here:
+        try {
+        String textoIdentificador = jTextFieldIdentificador.getText();
+        int identificador = Integer.parseInt(textoIdentificador);
+        String descricao = jTextFieldDescricao.getText();
+        Despesas objDespesas = new Despesas(identificador, descricao);
+        DespesasDAO objDeDespesasDAO = new DespesasDAO();
+
+        if (objDeDespesasDAO.idExiste(identificador)) {
+            JOptionPane.showMessageDialog(rootPane, "Já existe uma despesa com este identificador!");
+        } else {
+            objDeDespesasDAO.salvar(objDespesas);
+            exibirDespesasNaTabela();
+        }
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonIncluirActionPerformed
+
+    private void jTextFieldIdentificadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdentificadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldIdentificadorActionPerformed
+
+    private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
+        // TODO add your handling code here:
+        try {
+            DespesasDAO objDeDespesasDAO = null;
+            String textoIdentificador = jTextFieldIdentificador.getText();
+            int identificador = Integer.parseInt(textoIdentificador);
+            String Descricao = jTextFieldDescricao.getText();
+            objDeDespesasDAO = new DespesasDAO();
+            objDeDespesasDAO.atualizar(new Despesas(identificador, Descricao));
+            
+            exibirDespesasNaTabela();
+        } catch (Exception erro) {
+          JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonUpdateActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = jTableSaida.getSelectedRow();
+    if(linhaSelecionada != -1) {
+    int id = Integer.parseInt(jTableSaida.getValueAt(linhaSelecionada, 0).toString());
+
+    try {
+        DespesasDAO objDeDespesasDAO = new DespesasDAO();
+        objDeDespesasDAO.remover(id); // <-- Aqui você está usando o que JÁ criou!
+
+        exibirDespesasNaTabela();
+    } catch(Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao remover: " + e.getMessage());
+    }
+}
+
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
+    
+    // Cuidado!!!!!!!!
+    private void exibirDespesasNaTabela() {
+    try {
+        DespesasDAO dao = new DespesasDAO();
+        ArrayList<Despesas> lista = dao.listaDeTiposDeDespesas();
+
+        DefaultTableModel model = (DefaultTableModel) jTableSaida.getModel();
+        model.setRowCount(0);
+
+        for(Despesas despesa : lista) {
+            model.addRow(new Object[]{despesa.getID(), despesa.getDescricao()});
+        }
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Erro ao carregar despesas: " + ex.getMessage());
+    }
+    
+    
+}
+    // Cuidado!!!!!!!!
+    private void exibirDadosSelecionados() {
+    int linhaSelecionada = jTableSaida.getSelectedRow();
+    if (linhaSelecionada != -1) { // Garante que uma linha está realmente selecionada
+        String id = jTableSaida.getValueAt(linhaSelecionada, 0).toString(); // coluna 0: id
+        String descricao = jTableSaida.getValueAt(linhaSelecionada, 1).toString(); // coluna 1: descrição
+
+        jTextFieldIdentificador.setText(id);
+        jTextFieldDescricao.setText(descricao);
+    }
+
+}
+
+    
+
     /**
      * @param args the command line arguments
      */
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonExcluir;
+    private javax.swing.JButton jButtonIncluir;
+    private javax.swing.JButton jButtonUpdate;
     private javax.swing.JButton jButtonVoltar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableSaida;
     private javax.swing.JTextField jTextFieldDescricao;
     private javax.swing.JTextField jTextFieldIdentificador;
     // End of variables declaration//GEN-END:variables

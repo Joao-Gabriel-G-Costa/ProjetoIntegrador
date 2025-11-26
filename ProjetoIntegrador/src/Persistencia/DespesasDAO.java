@@ -21,7 +21,7 @@ public class DespesasDAO implements DespesasCRUD{
   private String nomeDoArquivoNoDisco = null;
   //Metodo Construtor
   public DespesasDAO(){
-    nomeDoArquivoNoDisco = "./src/bancodedados/TiposDeDespesas.txt";
+    nomeDoArquivoNoDisco = "./src/bancodedados/BancoDespesas.txt";
   }
   @Override
   public void salvar(Despesas tipoDeDespesa) throws Exception {
@@ -143,5 +143,19 @@ public class DespesasDAO implements DespesasCRUD{
       throw new Exception(msg);
     } 
   }
+  
+  @Override
+  public boolean idExiste(int identificador) throws Exception {
+    ArrayList<Despesas> lista = this.listaDeTiposDeDespesas();
+    for (Despesas d : lista) {
+        if (d.getID() == identificador) {
+            return true;
+        }
+    }
+    return false;
+}
+  
+  
+
   
 }

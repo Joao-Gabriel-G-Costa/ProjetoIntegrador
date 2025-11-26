@@ -12,4 +12,5 @@ public interface DespesasCRUD {
   Despesas buscarPorId(int idTipoDeDespesa) throws Exception;
   void atualizar(Despesas tipoDeDespesa) throws Exception;
   void remover(int idTipoDeDespesa) throws Exception;
+  boolean idExiste(int idTipoDeDespesa) throws Exception;
 }
