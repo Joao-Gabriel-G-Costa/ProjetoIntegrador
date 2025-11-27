@@ -6,6 +6,7 @@
 package visao;
 
 import Persistencia.DespesasDAO;
+import controle.ControleDespesas;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +17,7 @@ import modelos.classes.Despesas;
  * @author eugeniojulio
  */
 public class TelaDespesas extends javax.swing.JFrame {
+    ControleDespesas controle = new ControleDespesas();
 
     /**
      * Creates new form Despesas
@@ -198,18 +200,15 @@ public class TelaDespesas extends javax.swing.JFrame {
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
         // TODO add your handling code here:
         try {
-        String textoIdentificador = jTextFieldIdentificador.getText();
-        int identificador = Integer.parseInt(textoIdentificador);
-        String descricao = jTextFieldDescricao.getText();
-        Despesas objDespesas = new Despesas(identificador, descricao);
-        DespesasDAO objDeDespesasDAO = new DespesasDAO();
-
-        if (objDeDespesasDAO.idExiste(identificador)) {
-            JOptionPane.showMessageDialog(rootPane, "Já existe uma despesa com este identificador!");
-        } else {
-            objDeDespesasDAO.salvar(objDespesas);
+            int identificador = Integer.parseInt(jTextFieldIdentificador.getText());
+            String descricao = jTextFieldDescricao.getText();
+            Despesas objDeDespesa = new Despesas (identificador, descricao);
+            
+            controle.salvar(objDeDespesa);
+            jTextFieldIdentificador.setText("");
+            jTextFieldDescricao.setText("");
             exibirDespesasNaTabela();
-        }
+            
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
@@ -222,17 +221,18 @@ public class TelaDespesas extends javax.swing.JFrame {
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
         try {
-            DespesasDAO objDeDespesasDAO = null;
-            String textoIdentificador = jTextFieldIdentificador.getText();
-            int identificador = Integer.parseInt(textoIdentificador);
-            String Descricao = jTextFieldDescricao.getText();
-            objDeDespesasDAO = new DespesasDAO();
-            objDeDespesasDAO.atualizar(new Despesas(identificador, Descricao));
-            
+            int identificador = Integer.parseInt(jTextFieldIdentificador.getText());
+            String descricao = jTextFieldDescricao.getText();
+            Despesas objDeDespesa = new Despesas(identificador, descricao);
+
+            controle.atualizar(objDeDespesa); 
+            jTextFieldIdentificador.setText("");
+            jTextFieldDescricao.setText("");
             exibirDespesasNaTabela();
-        } catch (Exception erro) {
-          JOptionPane.showMessageDialog(rootPane, erro.getMessage());
-        }
+            
+    } catch (Exception erro) {
+        JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+    }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
@@ -243,7 +243,7 @@ public class TelaDespesas extends javax.swing.JFrame {
 
     try {
         DespesasDAO objDeDespesasDAO = new DespesasDAO();
-        objDeDespesasDAO.remover(id); // <-- Aqui você está usando o que JÁ criou!
+        objDeDespesasDAO.remover(id); 
 
         exibirDespesasNaTabela();
     } catch(Exception e) {

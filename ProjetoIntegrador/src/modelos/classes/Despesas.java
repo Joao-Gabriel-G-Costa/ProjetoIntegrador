@@ -9,8 +9,8 @@ package modelos.classes;
  * @author anaju
  */
 public class Despesas {
-    private int ID;
-    private String descricao;
+    private int ID = 0;
+    private String descricao = "";
 
     public Despesas() {}
     
