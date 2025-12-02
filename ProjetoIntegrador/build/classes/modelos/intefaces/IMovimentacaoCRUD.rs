@@ -1,0 +1,1 @@
+modelos.interfaces.IMovimentacaoCRUD
