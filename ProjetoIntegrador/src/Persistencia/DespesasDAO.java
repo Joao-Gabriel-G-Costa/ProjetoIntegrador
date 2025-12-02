@@ -5,18 +5,18 @@
 package Persistencia;
 import java.util.ArrayList;
 import modelos.classes.Despesas;
-import modelos.intefaces.DespesasCRUD;
 // Bibliotecas para IO em arquivo texto
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import modelos.interfaces.IDespesasCRUD;
 
 /**
  *
  * @author ejmcc
  */
-public class DespesasDAO implements DespesasCRUD{
+public class DespesasDAO implements IDespesasCRUD{
   //Atributos
   private String nomeDoArquivoNoDisco = null;
   //Metodo Construtor

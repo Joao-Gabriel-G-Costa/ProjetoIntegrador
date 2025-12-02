@@ -4,9 +4,9 @@ import Persistencia.DespesasDAO;
 import modelos.classes.Despesas.*;
 import java.util.ArrayList;
 import modelos.classes.Despesas;
-import modelos.intefaces.DespesasCRUD;
+import modelos.interfaces.IDespesasCRUD;
 
-public class ControleDespesas implements DespesasCRUD {
+public class ControleDespesas implements IDespesasCRUD {
 
     private DespesasDAO dao = new DespesasDAO();
 

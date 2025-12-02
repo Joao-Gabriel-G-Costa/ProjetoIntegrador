@@ -2,11 +2,11 @@ package controle;
 
 import Persistencia.VeiculosDAO;
 import modelos.classes.Veiculos;
-import modelos.intefaces.VeiculosCRUD;
 
 import java.util.ArrayList;
+import modelos.interfaces.IVeiculosCRUD;
 
-public class ControleVeiculos implements VeiculosCRUD {
+public class ControleVeiculos implements IVeiculosCRUD {
 
     private VeiculosDAO dao = new VeiculosDAO();
 
@@ -16,13 +16,13 @@ public class ControleVeiculos implements VeiculosCRUD {
     public void salvar(Veiculos veiculo) throws Exception {
         try {
             // Validações
-            if (veiculo.getPlaca() == null || veiculo.getPlaca().trim().isEmpty()) {
+            if (veiculo.getPlaca() == null || veiculo.getPlaca().isEmpty()) {
                 throw new Exception("A placa não pode estar vazia!");
             }
             if (veiculo.getMarca() == null || veiculo.getMarca().trim().isEmpty()) {
                 throw new Exception("A marca não pode estar vazia!");
             }
-            if (veiculo.getModelo() == null || veiculo.getModelo().trim().isEmpty()) {
+            if (veiculo.getModelo() == null || veiculo.getModelo().isEmpty()) {
                 throw new Exception("O modelo não pode estar vazio!");
             }
 

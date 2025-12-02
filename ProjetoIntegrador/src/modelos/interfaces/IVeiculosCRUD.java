@@ -1,8 +1,8 @@
-package modelos.intefaces;
+package modelos.interfaces;
 import java.util.ArrayList;
 import modelos.classes.Veiculos;
 
-public interface VeiculosCRUD {
+public interface IVeiculosCRUD {
   void salvar(Veiculos infoVeiculos) throws Exception;
   ArrayList<Veiculos> listaVeiculos() throws Exception;
   Veiculos buscarPorId(int idVeiculo) throws Exception;

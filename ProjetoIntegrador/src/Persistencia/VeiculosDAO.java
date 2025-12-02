@@ -2,14 +2,14 @@ package Persistencia;
 
 import java.util.ArrayList;
 import modelos.classes.Veiculos;
-import modelos.intefaces.VeiculosCRUD;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import modelos.interfaces.IVeiculosCRUD;
 
-public class VeiculosDAO implements VeiculosCRUD {
+public class VeiculosDAO implements IVeiculosCRUD {
 
     private String nomeDoArquivoNoDisco = null;
     //Metodo Construtor
