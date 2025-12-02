@@ -224,7 +224,7 @@ public class TelaDespesas extends javax.swing.JFrame {
         jButtonVoltar.setBackground(new java.awt.Color(102, 102, 102));
         jButtonVoltar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jButtonVoltar.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8-esquerda-2-24.png"))); // NOI18N
+        jButtonVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/voltar.png"))); // NOI18N
         jButtonVoltar.setText("Voltar");
         jButtonVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
