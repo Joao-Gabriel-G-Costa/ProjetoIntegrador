@@ -6,20 +6,25 @@
 package visao;
 
 import Persistencia.DespesasDAO;
+import Persistencia.MovimentacaoDAO;
 import Persistencia.VeiculosDAO;
+import controle.ControleMovimentacao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.classes.Despesas;
+import modelos.classes.Movimentacao;
 import modelos.classes.Veiculos;
 
 public class TelaMovimento extends javax.swing.JFrame {
+    ControleMovimentacao controle = new ControleMovimentacao();
 
     public TelaMovimento() {
         initComponents();
         this.setLocationRelativeTo(null);
         carregarTabelaVeiculos();
         carregarTabelaDespesas();
+        exibirMovimentacoes();
         
        jTableSaidaVeiculos.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -32,6 +37,13 @@ public class TelaMovimento extends javax.swing.JFrame {
             exibirDadoSelecionadoEmCampo(jTableSaidaDespesa, 0, jTextFieldIdTipoDespesa);
         }
     });
+    
+    jTableSaidaMovimentacao.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseClicked(java.awt.event.MouseEvent evt) {
+        exibirMovimentacaoSelecionada();
+    }
+});
+
 }
 
 
@@ -60,7 +72,7 @@ public class TelaMovimento extends javax.swing.JFrame {
         jTextFieldValor = new javax.swing.JTextField();
         jTextFieldData = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableSaida = new javax.swing.JTable();
+        jTableSaidaMovimentacao = new javax.swing.JTable();
         jButtonRegistrar = new javax.swing.JButton();
         jButtonAlterar = new javax.swing.JButton();
         jButtonDeletar = new javax.swing.JButton();
@@ -102,7 +114,7 @@ public class TelaMovimento extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Data");
 
-        jTableSaida.setModel(new javax.swing.table.DefaultTableModel(
+        jTableSaidaMovimentacao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -121,7 +133,7 @@ public class TelaMovimento extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTableSaida);
+        jScrollPane1.setViewportView(jTableSaidaMovimentacao);
 
         jButtonRegistrar.setText("Registrar");
         jButtonRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -292,7 +304,22 @@ public class TelaMovimento extends javax.swing.JFrame {
 
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
         // TODO add your handling code here:
-        
+         try {
+        int idMovimentacao = Integer.parseInt(jTextFieldIdMovimento.getText());
+        int IdVeiculo = Integer.parseInt(jTextFieldIdVeiculo.getText());
+        int idDespesa = Integer.parseInt(jTextFieldIdTipoDespesa.getText());
+        String descricao = jTextFieldDescricao.getText();
+        String data = jTextFieldData.getText();
+        double valor = Double.parseDouble(jTextFieldValor.getText().replace(",", "."));
+
+        Movimentacao m = new Movimentacao(idMovimentacao, IdVeiculo, idDespesa, descricao, data, valor);
+        controle.salvar(m);  // chama o controle → DAO
+
+        JOptionPane.showMessageDialog(this, "Movimentação registrada com sucesso!");
+        exibirMovimentacoes();  // atualiza a tabela de baixo
+    } catch (Exception erro) {
+        JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jButtonRegistrarActionPerformed
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
@@ -343,6 +370,28 @@ private void carregarTabelaDespesas() {
     }
 }
 
+private void exibirMovimentacoes() {
+    try {
+        ArrayList<Movimentacao> lista = controle.listaDeMovimentacoes();
+        DefaultTableModel modelo = (DefaultTableModel) jTableSaidaMovimentacao.getModel();
+        modelo.setRowCount(0); // limpa tabela
+
+        for (Movimentacao m : lista) {
+            modelo.addRow(new Object[]{
+                m.getIdMovimentacao(),
+                m.getIdVeiculo(),
+                m.getIdDespesa(),
+                m.getDescricao(),
+                m.getData(),
+                m.getValor()
+            });
+        }
+    } catch (Exception erro) {
+        JOptionPane.showMessageDialog(this, "Erro ao carregar movimentações: " + erro.getMessage());
+    }
+}
+
+
 private void exibirDadoSelecionadoEmCampo(javax.swing.JTable tabela, int colunaId, javax.swing.JTextField campoDestino) {
     int linhaSelecionada = tabela.getSelectedRow();
     if (linhaSelecionada != -1) {
@@ -350,6 +399,34 @@ private void exibirDadoSelecionadoEmCampo(javax.swing.JTable tabela, int colunaI
         campoDestino.setText(id);
     }
 }
+
+private void exibirMovimentacaoSelecionada() {
+    int linhaSelecionada = jTableSaidaMovimentacao.getSelectedRow();
+    if (linhaSelecionada != -1) {
+        jTextFieldIdMovimento.setText(
+            jTableSaidaMovimentacao.getValueAt(linhaSelecionada, 0).toString()
+        );
+        jTextFieldIdVeiculo.setText(
+            jTableSaidaMovimentacao.getValueAt(linhaSelecionada, 1).toString()
+        );
+        jTextFieldIdTipoDespesa.setText(
+            jTableSaidaMovimentacao.getValueAt(linhaSelecionada, 2).toString()
+        );
+        jTextFieldDescricao.setText(
+            jTableSaidaMovimentacao.getValueAt(linhaSelecionada, 3).toString()
+        );
+        jTextFieldData.setText(
+            jTableSaidaMovimentacao.getValueAt(linhaSelecionada, 4).toString()
+        );
+        jTextFieldValor.setText(
+            jTableSaidaMovimentacao.getValueAt(linhaSelecionada, 5).toString()
+        );
+    }
+}
+
+
+
+
 
     
 
@@ -369,8 +446,8 @@ private void exibirDadoSelecionadoEmCampo(javax.swing.JTable tabela, int colunaI
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTableSaida;
     private javax.swing.JTable jTableSaidaDespesa;
+    private javax.swing.JTable jTableSaidaMovimentacao;
     private javax.swing.JTable jTableSaidaVeiculos;
     private javax.swing.JTextField jTextFieldData;
     private javax.swing.JTextField jTextFieldDescricao;

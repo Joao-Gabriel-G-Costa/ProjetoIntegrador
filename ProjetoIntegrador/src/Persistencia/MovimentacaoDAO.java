@@ -22,20 +22,22 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
     private String nomeDoArquivoNoDisco = null;
 
     public MovimentacaoDAO() {
-        nomeDoArquivoNoDisco = "./src/bancodedados/BancoMovimentos.txt";
+        nomeDoArquivoNoDisco = "./src/bancodedados/BancoMovimento.txt";
     }
 
     @Override
-    public void salvar(Movimentacao movimentacoes) throws Exception {
+    public void salvar(Movimentacao m) throws Exception {
        try {
             FileWriter fw = new FileWriter(nomeDoArquivoNoDisco, true);
             BufferedWriter bw = new BufferedWriter(fw);
 
-            String str = movimentacoes.getIdMovimentacao() + ";"
-                       + movimentacoes.getDescricao()+ ";"
-                       + movimentacoes.getData()+ ";"
-                       + movimentacoes.getValor()+ "\n";
-
+            // salvar
+            String str = m.getIdMovimentacao() + ";"
+                      + m.getIdVeiculo() + ";"
+                      + m.getIdDespesa() + ";"
+                      + m.getDescricao() + ";"
+                      + m.getData() + ";"
+                      + m.getValor() + "\n";
             bw.write(str);
             bw.close();
 
@@ -56,13 +58,14 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
 
             while ((linha = br.readLine()) != null) {
                 String vetor[] = linha.split(";");
-
-                int idMovimentacao = Integer.parseInt(vetor[0]);
-                String descricao = vetor[1];
-                String data = vetor[2];
-                double valor = Double.parseDouble(vetor[3]);
+                    int idMovimentacao = Integer.parseInt(vetor[0]);
+                    int idVeiculo = Integer.parseInt(vetor[1]);
+                    int idDespesa = Integer.parseInt(vetor[2]);
+                    String descricao = vetor[3];
+                    String data = vetor[4];
+                    double valor = Double.parseDouble(vetor[5]);
                 
-                Movimentacao movi = new Movimentacao(idMovimentacao, descricao, data, valor);
+                Movimentacao movi = new Movimentacao(idMovimentacao, idVeiculo, idDespesa, descricao, data, valor);
                 lista.add(movi);
             }
 
@@ -76,34 +79,37 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
 
     @Override
     public Movimentacao buscarPorId(int idMovimentacao) throws Exception {
-        try {
-            FileReader fr = new FileReader(nomeDoArquivoNoDisco);
-            BufferedReader br = new BufferedReader(fr);
+    try {
+        FileReader fr = new FileReader(nomeDoArquivoNoDisco);
+        BufferedReader br = new BufferedReader(fr);
 
-            String linha = "";
+        String linha;
 
-            while ((linha = br.readLine()) != null) {
-                String vetor[] = linha.split(";");
+        while ((linha = br.readLine()) != null) {
+            String vetor[] = linha.split(";");
 
-                int idAux = Integer.parseInt(vetor[0]);
+            int idAux = Integer.parseInt(vetor[0]);
 
-                if (idAux == idMovimentacao) {
-                    String descricao = vetor[1];
-                    String data = vetor[2];
-                    double valor = Double.parseDouble(vetor[3]);
-   
-                    br.close();
-                    return new Movimentacao(idMovimentacao, descricao, data, valor);
-                }
+            if (idAux == idMovimentacao) {
+                int idVeiculo = Integer.parseInt(vetor[1]);
+                int idDespesa = Integer.parseInt(vetor[2]);
+                String descricao = vetor[3];
+                String data = vetor[4];
+                double valor = Double.parseDouble(vetor[5]);
+
+                br.close();
+                return new Movimentacao(idAux, idVeiculo, idDespesa, descricao, data, valor);
             }
+        }
 
-             br.close();
-             return null;
+        br.close();
+        return null;
 
         } catch (Exception erro) {
             throw new Exception("Persistencia - Buscar: " + erro.getMessage());
         }
     }
+
     @Override
     public void atualizar(Movimentacao movimentacoes) throws Exception {
         try {
