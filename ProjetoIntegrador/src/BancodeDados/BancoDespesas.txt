@@ -1,3 +1,7 @@
 2;Manutenção
+<<<<<<< HEAD
 5;Combustivel
 1;Limpeza
+=======
+123;abc
+>>>>>>> 33bd5e35d70d5e313f7328d6a377d6afd541f523

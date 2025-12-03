@@ -55,7 +55,7 @@ public class VeiculosDAO implements IVeiculosCRUD {
                 String placa = vet[1];
                 String marca = vet[2];
                 String modelo = vet[3];
-                int ano = Integer.parseInt(vet[4]);
+                String ano = vet[4];
                 boolean situacao = Boolean.parseBoolean(vet[5]);
 
                 Veiculos v = new Veiculos(id, placa, marca, modelo, ano, situacao);
@@ -87,7 +87,7 @@ public class VeiculosDAO implements IVeiculosCRUD {
                     String placa = vet[1];
                     String marca = vet[2];
                     String modelo = vet[3];
-                    int ano = Integer.parseInt(vet[4]);
+                    String ano = vet[4];
                     boolean situacao = Boolean.parseBoolean(vet[5]);
 
                     br.close();

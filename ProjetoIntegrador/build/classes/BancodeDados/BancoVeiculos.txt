@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 23;PRU390;CHEVROLET;2015;2015;true
 123;LOIH7G;FIAT;FUSCA;1974;true
 55;123;asdas;asdasd;12131;false
 1;H76TYB;HONDA;CIVIC;2020;false
 2;HY65TG;HONDA;HRV;2020;true
+=======
+52;ASDASD;sadasd;dasdas;52;true
+55;ASDA1231212;abc;asdasd;123;true
+>>>>>>> 33bd5e35d70d5e313f7328d6a377d6afd541f523

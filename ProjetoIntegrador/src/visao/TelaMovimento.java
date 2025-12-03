@@ -5,16 +5,13 @@
  */
 package visao;
 
-import Persistencia.DespesasDAO;
-import Persistencia.MovimentacaoDAO;
-import Persistencia.VeiculosDAO;
 import controle.ControleMovimentacao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import modelos.classes.Despesas;
+
 import modelos.classes.Movimentacao;
-import modelos.classes.Veiculos;
+
 
 public class TelaMovimento extends javax.swing.JFrame {
     ControleMovimentacao controle = new ControleMovimentacao();
@@ -22,22 +19,9 @@ public class TelaMovimento extends javax.swing.JFrame {
     public TelaMovimento() {
         initComponents();
         this.setLocationRelativeTo(null);
-        carregarTabelaVeiculos();
-        carregarTabelaDespesas();
         exibirMovimentacoes();
-        
-       jTableSaidaVeiculos.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            exibirDadoSelecionadoEmCampo(jTableSaidaVeiculos, 0, jTextFieldIdVeiculo);
-        }
-    });
-
-    jTableSaidaDespesa.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            exibirDadoSelecionadoEmCampo(jTableSaidaDespesa, 0, jTextFieldIdTipoDespesa);
-        }
-    });
-    
+        jTextFieldIdVeiculo.setEditable(false);
+        jTextFieldIdTipoDespesa.setEditable(false);
     jTableSaidaMovimentacao.addMouseListener(new java.awt.event.MouseAdapter() {
     public void mouseClicked(java.awt.event.MouseEvent evt) {
         exibirMovimentacaoSelecionada();
@@ -45,9 +29,6 @@ public class TelaMovimento extends javax.swing.JFrame {
 });
 
 }
-
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,6 +40,10 @@ public class TelaMovimento extends javax.swing.JFrame {
     private void initComponents() {
 
         jSpinner1 = new javax.swing.JSpinner();
+        jDialog1 = new javax.swing.JDialog();
+        jDialog2 = new javax.swing.JDialog();
+        jDialog3 = new javax.swing.JDialog();
+        jDialog4 = new javax.swing.JDialog();
         jButtonVoltar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -76,12 +61,54 @@ public class TelaMovimento extends javax.swing.JFrame {
         jButtonRegistrar = new javax.swing.JButton();
         jButtonAlterar = new javax.swing.JButton();
         jButtonDeletar = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTableSaidaDespesa = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTableSaidaVeiculos = new javax.swing.JTable();
         jTextFieldIdTipoDespesa = new javax.swing.JTextField();
         jTextFieldIdVeiculo = new javax.swing.JTextField();
+        jButtonSelecionarIDVeiculo = new javax.swing.JButton();
+        jButtonSelecionarIDDespesa = new javax.swing.JButton();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jDialog2Layout = new javax.swing.GroupLayout(jDialog2.getContentPane());
+        jDialog2.getContentPane().setLayout(jDialog2Layout);
+        jDialog2Layout.setHorizontalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog2Layout.setVerticalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jDialog3Layout = new javax.swing.GroupLayout(jDialog3.getContentPane());
+        jDialog3.getContentPane().setLayout(jDialog3Layout);
+        jDialog3Layout.setHorizontalGroup(
+            jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog3Layout.setVerticalGroup(
+            jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jDialog4Layout = new javax.swing.GroupLayout(jDialog4.getContentPane());
+        jDialog4.getContentPane().setLayout(jDialog4Layout);
+        jDialog4Layout.setHorizontalGroup(
+            jDialog4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog4Layout.setVerticalGroup(
+            jDialog4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JANELA @");
@@ -156,47 +183,25 @@ public class TelaMovimento extends javax.swing.JFrame {
             }
         });
 
-        jTableSaidaDespesa.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Identificador", "Descrição"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        jTextFieldIdVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldIdVeiculoActionPerformed(evt);
             }
         });
-        jScrollPane2.setViewportView(jTableSaidaDespesa);
 
-        jTableSaidaVeiculos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Identificador", "Placa", "Marca", "Modelo", "AnoFab.", "Situação"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        jButtonSelecionarIDVeiculo.setText("...");
+        jButtonSelecionarIDVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSelecionarIDVeiculoActionPerformed(evt);
             }
         });
-        jScrollPane3.setViewportView(jTableSaidaVeiculos);
+
+        jButtonSelecionarIDDespesa.setText("...");
+        jButtonSelecionarIDDespesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSelecionarIDDespesaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -205,56 +210,53 @@ public class TelaMovimento extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(270, 270, 270)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(229, 229, 229)
+                                        .addComponent(jLabel1))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jTextFieldIdMovimento, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jTextFieldIdVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(36, 36, 36)
+                                        .addGap(7, 7, 7)
+                                        .addComponent(jButtonSelecionarIDVeiculo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jTextFieldIdTipoDespesa, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(25, 25, 25)
-                                        .addComponent(jButtonRegistrar))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(28, 28, 28)
-                                        .addComponent(jLabel7)
-                                        .addGap(30, 30, 30)
-                                        .addComponent(jTextFieldData, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(38, 38, 38)
-                                        .addComponent(jLabel5)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(26, 26, 26)
-                                        .addComponent(jButtonAlterar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButtonDeletar)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(58, 58, 58)
-                                .addComponent(jButtonVoltar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonSelecionarIDDespesa)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)))))
+                                .addComponent(jButtonRegistrar))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(28, 28, 28)
+                                    .addComponent(jLabel7)
+                                    .addGap(30, 30, 30)
+                                    .addComponent(jTextFieldData, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(38, 38, 38)
+                                    .addComponent(jLabel5)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(26, 26, 26)
+                                    .addComponent(jButtonAlterar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jButtonDeletar))))
+                        .addGap(0, 133, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonVoltar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -270,7 +272,9 @@ public class TelaMovimento extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jButtonRegistrar)
                     .addComponent(jTextFieldIdTipoDespesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldIdVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldIdVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonSelecionarIDVeiculo)
+                    .addComponent(jButtonSelecionarIDDespesa))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -281,14 +285,10 @@ public class TelaMovimento extends javax.swing.JFrame {
                     .addComponent(jTextFieldData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAlterar)
                     .addComponent(jButtonDeletar))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonVoltar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonVoltar)
                 .addGap(26, 26, 26))
         );
 
@@ -306,22 +306,25 @@ public class TelaMovimento extends javax.swing.JFrame {
 
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
         // TODO add your handling code here:
-         try {
-        int idMovimentacao = Integer.parseInt(jTextFieldIdMovimento.getText());
-        int IdVeiculo = Integer.parseInt(jTextFieldIdVeiculo.getText());
-        int idDespesa = Integer.parseInt(jTextFieldIdTipoDespesa.getText());
-        String descricao = jTextFieldDescricao.getText();
-        String data = jTextFieldData.getText();
-        double valor = Double.parseDouble(jTextFieldValor.getText().replace(",", "."));
+        try {
+            if(jTextFieldIdMovimento.getText().isEmpty()){throw new Exception("O ID movimento não pode ser nulo");}
+            if(jTextFieldIdVeiculo.getText().isEmpty()){throw new Exception("O ID veiculo não pode ser nulo");}
+            if(jTextFieldIdTipoDespesa.getText().isEmpty()){throw new Exception("O ID despesas não pode ser nulo");}
+            int idMovimentacao = Integer.parseInt(jTextFieldIdMovimento.getText());
+            int IdVeiculo = Integer.parseInt(jTextFieldIdVeiculo.getText());
+            int idDespesa = Integer.parseInt(jTextFieldIdTipoDespesa.getText());
+            String descricao = jTextFieldDescricao.getText();
+            String data = jTextFieldData.getText();
+            double valor = Double.parseDouble(jTextFieldValor.getText().replace(",", "."));
 
-        Movimentacao m = new Movimentacao(idMovimentacao, IdVeiculo, idDespesa, descricao, data, valor);
-        controle.salvar(m);  // chama o controle → DAO
+            Movimentacao m = new Movimentacao(idMovimentacao, IdVeiculo, idDespesa, descricao, data, valor);
+            controle.salvar(m);  // chama o controle → DAO
 
-        JOptionPane.showMessageDialog(this, "Movimentação registrada com sucesso!");
-        exibirMovimentacoes();  // atualiza a tabela de baixo
-    } catch (Exception erro) {
-        JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-    }
+            JOptionPane.showMessageDialog(this, "Movimentação registrada com sucesso!");
+            exibirMovimentacoes();  // atualiza a tabela de baixo
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonRegistrarActionPerformed
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
@@ -334,43 +337,23 @@ public class TelaMovimento extends javax.swing.JFrame {
        
     }//GEN-LAST:event_jButtonDeletarActionPerformed
 
-    private void carregarTabelaVeiculos() {
-    try {
-        VeiculosDAO dao = new VeiculosDAO();
-        ArrayList<Veiculos> lista = dao.listaVeiculos();
-        DefaultTableModel modelo = (DefaultTableModel) jTableSaidaVeiculos.getModel();
-        modelo.setRowCount(0);
-        for (Veiculos v : lista) {
-            modelo.addRow(new Object[]{
-                v.getIdVeiculo(),
-                v.getPlaca(),
-                v.getMarca(),
-                v.getModelo(),
-                v.getAnoFabricacao(),
-                v.isSituacao() ? "Ativo" : "Inativo"
-            });
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao carregar veículos: " + e.getMessage());
-    }
-}
+    private void jButtonSelecionarIDVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelecionarIDVeiculoActionPerformed
+        // TODO add your handling code here:
+        TelaSelecionarVeiculo tela = new TelaSelecionarVeiculo(this);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jButtonSelecionarIDVeiculoActionPerformed
 
-private void carregarTabelaDespesas() {
-    try {
-        DespesasDAO dao = new DespesasDAO();
-        ArrayList<Despesas> lista = dao.listaDeTiposDeDespesas();
-        DefaultTableModel modelo = (DefaultTableModel) jTableSaidaDespesa.getModel();
-        modelo.setRowCount(0);
-        for (Despesas d : lista) {
-            modelo.addRow(new Object[]{
-                d.getID(),
-                d.getDescricao()
-            });
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao carregar despesas: " + e.getMessage());
-    }
-}
+    private void jTextFieldIdVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdVeiculoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldIdVeiculoActionPerformed
+
+    private void jButtonSelecionarIDDespesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelecionarIDDespesaActionPerformed
+        // TODO add your handling code here:
+        TelaSelecionarDespesa TelaSelecionarDespesa = new TelaSelecionarDespesa(this);
+        TelaSelecionarDespesa.setVisible(true);
+    }//GEN-LAST:event_jButtonSelecionarIDDespesaActionPerformed
+
+
 
 private void exibirMovimentacoes() {
     try {
@@ -426,7 +409,13 @@ private void exibirMovimentacaoSelecionada() {
     }
 }
 
+public void setIdVeiculoSelecionado(String id) {
+    jTextFieldIdVeiculo.setText(id);
+}
 
+public void setIdDespesaSelecionada(String id) {
+    jTextFieldIdTipoDespesa.setText(id);
+}
 
 
 
@@ -436,7 +425,13 @@ private void exibirMovimentacaoSelecionada() {
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonDeletar;
     private javax.swing.JButton jButtonRegistrar;
+    private javax.swing.JButton jButtonSelecionarIDDespesa;
+    private javax.swing.JButton jButtonSelecionarIDVeiculo;
     private javax.swing.JButton jButtonVoltar;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JDialog jDialog2;
+    private javax.swing.JDialog jDialog3;
+    private javax.swing.JDialog jDialog4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -445,12 +440,8 @@ private void exibirMovimentacaoSelecionada() {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTableSaidaDespesa;
     private javax.swing.JTable jTableSaidaMovimentacao;
-    private javax.swing.JTable jTableSaidaVeiculos;
     private javax.swing.JTextField jTextFieldData;
     private javax.swing.JTextField jTextFieldDescricao;
     private javax.swing.JTextField jTextFieldIdMovimento;
