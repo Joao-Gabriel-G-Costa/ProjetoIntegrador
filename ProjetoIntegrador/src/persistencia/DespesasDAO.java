@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Persistencia;
+package persistencia;
 import java.util.ArrayList;
 import modelos.classes.Despesas;
 // Bibliotecas para IO em arquivo texto

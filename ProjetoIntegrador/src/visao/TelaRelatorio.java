@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package visao;
-import Persistencia.RelatoriosDAO;
+import persistencia.RelatoriosDAO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import visao.MenuPrincipal;

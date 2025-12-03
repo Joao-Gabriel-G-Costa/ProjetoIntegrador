@@ -5,7 +5,7 @@
  */
 package visao;
 
-import Persistencia.DespesasDAO;
+import persistencia.DespesasDAO;
 import controle.ControleDespesas;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;

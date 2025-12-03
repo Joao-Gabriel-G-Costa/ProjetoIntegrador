@@ -4,7 +4,7 @@
  */
 package visao;
 
-import Persistencia.DespesasDAO;
+import persistencia.DespesasDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

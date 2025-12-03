@@ -1,6 +1,6 @@
 package controle;
 
-import Persistencia.MovimentacaoDAO;
+import persistencia.MovimentacaoDAO;
 import java.util.ArrayList;
 import modelos.classes.Movimentacao;
 import modelos.interfaces.IMovimentacaoCRUD;

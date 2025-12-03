@@ -4,7 +4,7 @@
  */
 package visao;
 
-import Persistencia.VeiculosDAO;
+import persistencia.VeiculosDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
