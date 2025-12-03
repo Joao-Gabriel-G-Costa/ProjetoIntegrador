@@ -2,8 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+<<<<<<< HEAD:ProjetoIntegrador/src/Persistencia/RelatoriosDAO.java
 package Persistencia;
 import Persistencia.VeiculosDAO;
+=======
+package persistencia;
+>>>>>>> 8f493e8089e01e4641df975a29feac032f41a764:ProjetoIntegrador/src/persistencia/RelatoriosDAO.java
 import modelos.classes.Veiculos;
 import modelos.classes.Movimentacao;
 import modelos.classes.Despesas; 

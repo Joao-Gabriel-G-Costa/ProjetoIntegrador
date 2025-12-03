@@ -4,8 +4,12 @@
  * and open the template in the editor.
  */
 package visao;
+<<<<<<< HEAD
 import Persistencia.DespesasDAO;
 import Persistencia.RelatoriosDAO;
+=======
+import persistencia.RelatoriosDAO;
+>>>>>>> 8f493e8089e01e4641df975a29feac032f41a764
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;

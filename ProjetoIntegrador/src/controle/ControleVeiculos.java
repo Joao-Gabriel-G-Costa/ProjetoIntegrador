@@ -1,6 +1,6 @@
 package controle;
 
-import Persistencia.VeiculosDAO;
+import persistencia.VeiculosDAO;
 import modelos.classes.Veiculos;
 
 import java.util.ArrayList;
