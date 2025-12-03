@@ -14,12 +14,12 @@ public class Veiculos {
     private String placa = "";
     private String marca = "";
     private String modelo = "";
-    private String anoFabricacao = "";
+    private int anoFabricacao = 0;
     private boolean situacao;
     
     //metodos
     public Veiculos() {}
-    public Veiculos(int idVeiculo, String placa, String marca, String modelo, String anoFabricacao, boolean situacao) {
+    public Veiculos(int idVeiculo, String placa, String marca, String modelo, int anoFabricacao, boolean situacao) {
         this.idVeiculo = idVeiculo;
         this.placa = placa;
         this.marca = marca;
@@ -52,10 +52,10 @@ public class Veiculos {
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
-    public String getAnoFabricacao() {
+    public int getAnoFabricacao() {
         return anoFabricacao;
     }
-    public void setAnoFabricacao(String anoFabricacao) {
+    public void setAnoFabricacao(int anoFabricacao) {
         this.anoFabricacao = anoFabricacao;
     }
     public boolean isSituacao() {

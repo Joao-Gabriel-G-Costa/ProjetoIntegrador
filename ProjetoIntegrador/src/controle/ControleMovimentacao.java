@@ -15,9 +15,6 @@ public class ControleMovimentacao implements IMovimentacaoCRUD {
     public void salvar(Movimentacao mov) throws Exception {
         try {
             // Validações básicas
-            if (mov.getDescricao() == null || mov.getDescricao().trim().isEmpty()) {
-                throw new Exception("A Descrição não pode estar vazia!");
-            }
             if (mov.getData() == null || mov.getData().trim().isEmpty()) {
                 throw new Exception("A data não pode estar vazia!");
             }
