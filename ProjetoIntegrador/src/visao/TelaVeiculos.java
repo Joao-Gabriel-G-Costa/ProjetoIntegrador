@@ -104,7 +104,7 @@ public class TelaVeiculos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(164, 164, 164)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
                 .addComponent(jButtonVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -283,28 +283,23 @@ public class TelaVeiculos extends javax.swing.JFrame {
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel4)
                                     .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextFieldPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel5)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jComboSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jTextFieldAnoFabricacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextFieldPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel5))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel7)
+                                .addComponent(jComboSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6)
+                                .addComponent(jTextFieldAnoFabricacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 68, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
@@ -343,16 +338,17 @@ public class TelaVeiculos extends javax.swing.JFrame {
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
         // TODO add your handling code here:
         try {
+            if(jTextFieldIDVeiculo.getText().isEmpty()){throw new Exception("O ID não pode ser nulo");}
             int id = Integer.parseInt(jTextFieldIDVeiculo.getText());
             String placa = jTextFieldPlaca.getText().toUpperCase();
             String marca = jTextFieldMarca.getText();
             String modelo = jTextFieldModelo.getText();
-            int ano = Integer.parseInt(jTextFieldAnoFabricacao.getText());
+            String ano = jTextFieldAnoFabricacao.getText();
             boolean situacao = jComboSituacao.getSelectedItem().equals("Ativo");
-            
+
             Veiculos v = new Veiculos(id, placa, marca, modelo, ano, situacao);
             controle.salvar(v);
-            
+
             jTextFieldIDVeiculo.setText("");
             jTextFieldPlaca.setText("");
             jTextFieldMarca.setText("");
@@ -363,43 +359,14 @@ public class TelaVeiculos extends javax.swing.JFrame {
 
             exibirVeiculos();
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, "Verifique os campos!");
+            JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonRegistrarActionPerformed
-
-    private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-        // TODO add your handling code here:
-        try {
-            int id = Integer.parseInt(jTextFieldIDVeiculo.getText());
-            String placa = jTextFieldPlaca.getText().toUpperCase();
-            String marca = jTextFieldMarca.getText();
-            String modelo = jTextFieldModelo.getText();
-            int ano = Integer.parseInt(jTextFieldAnoFabricacao.getText());
-            boolean situacao = jComboSituacao.getSelectedItem().equals("Ativo");
-            
-            Veiculos v = new Veiculos(id, placa, marca, modelo, ano, situacao);
-            controle.atualizar(v);
-            
-            jTextFieldIDVeiculo.setText("");
-            jTextFieldPlaca.setText("");
-            jTextFieldMarca.setText("");
-            jTextFieldModelo.setText("");
-            jTextFieldAnoFabricacao.setText("");
-
-            JOptionPane.showMessageDialog(this, "Veículo atualizado com sucesso!");
-            
-            exibirVeiculos();
-        } catch (Exception erro) {
-            JOptionPane.showMessageDialog(rootPane, "Verifique os campos!");
-        }
-
-    }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     private void jButtonDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeletarActionPerformed
         // TODO add your handling code here:
         try {
             int id = Integer.parseInt(jTextFieldIDVeiculo.getText());
-
             controle.remover(id); // chama o controle para remover
             jTextFieldIDVeiculo.setText("");
             jTextFieldPlaca.setText("");
@@ -407,13 +374,42 @@ public class TelaVeiculos extends javax.swing.JFrame {
             jTextFieldModelo.setText("");
             jTextFieldAnoFabricacao.setText("");
             jComboSituacao.setSelectedIndex(0);
+            
+            JOptionPane.showMessageDialog(this, "Veiculo deletado com sucesso!");
 
             exibirVeiculos(); // atualiza a tabela
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(rootPane, "Verifique os campos!");
         }
-
     }//GEN-LAST:event_jButtonDeletarActionPerformed
+
+    private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
+        // TODO add your handling code here:
+        try {
+            if(jTextFieldIDVeiculo.getText().isEmpty()){throw new Exception("O ID não pode ser nulo");}
+            int id = Integer.parseInt(jTextFieldIDVeiculo.getText());
+            String placa = jTextFieldPlaca.getText().toUpperCase();
+            String marca = jTextFieldMarca.getText();
+            String modelo = jTextFieldModelo.getText();
+            String ano = jTextFieldAnoFabricacao.getText();
+            boolean situacao = jComboSituacao.getSelectedItem().equals("Ativo");
+
+            Veiculos v = new Veiculos(id, placa, marca, modelo, ano, situacao);
+            controle.atualizar(v);
+
+            jTextFieldIDVeiculo.setText("");
+            jTextFieldPlaca.setText("");
+            jTextFieldMarca.setText("");
+            jTextFieldModelo.setText("");
+            jTextFieldAnoFabricacao.setText("");
+
+            JOptionPane.showMessageDialog(this, "Veículo atualizado com sucesso!");
+
+            exibirVeiculos();
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     private void exibirVeiculos() {
      try {

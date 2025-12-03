@@ -286,6 +286,7 @@ public class TelaDespesas extends javax.swing.JFrame {
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
         // TODO add your handling code here:
         try {
+            if(jTextFieldIdentificador.getText().isEmpty()){throw new Exception("O ID não pode ser nulo");}
             int identificador = Integer.parseInt(jTextFieldIdentificador.getText());
             String descricao = jTextFieldDescricao.getText();
             Despesas objDeDespesa = new Despesas (identificador, descricao);
@@ -299,7 +300,7 @@ public class TelaDespesas extends javax.swing.JFrame {
             exibirDespesasNaTabela();
             
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(rootPane, "Verifique os campos!");
+            JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonIncluirActionPerformed
 
@@ -310,6 +311,7 @@ public class TelaDespesas extends javax.swing.JFrame {
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
         try {
+            if(jTextFieldIdentificador.getText().isEmpty()){throw new Exception("O ID não pode ser nulo");}
             int identificador = Integer.parseInt(jTextFieldIdentificador.getText());
             String descricao = jTextFieldDescricao.getText();
             Despesas objDeDespesa = new Despesas(identificador, descricao);
@@ -324,7 +326,7 @@ public class TelaDespesas extends javax.swing.JFrame {
             
             
     } catch (Exception erro) {
-        JOptionPane.showMessageDialog(rootPane, "Verifique os campos!");
+        JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 

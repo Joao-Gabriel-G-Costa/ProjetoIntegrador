@@ -306,22 +306,25 @@ public class TelaMovimento extends javax.swing.JFrame {
 
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
         // TODO add your handling code here:
-         try {
-        int idMovimentacao = Integer.parseInt(jTextFieldIdMovimento.getText());
-        int IdVeiculo = Integer.parseInt(jTextFieldIdVeiculo.getText());
-        int idDespesa = Integer.parseInt(jTextFieldIdTipoDespesa.getText());
-        String descricao = jTextFieldDescricao.getText();
-        String data = jTextFieldData.getText();
-        double valor = Double.parseDouble(jTextFieldValor.getText().replace(",", "."));
+        try {
+            if(jTextFieldIdMovimento.getText().isEmpty()){throw new Exception("O ID movimento não pode ser nulo");}
+            if(jTextFieldIdVeiculo.getText().isEmpty()){throw new Exception("O ID veiculo não pode ser nulo");}
+            if(jTextFieldIdTipoDespesa.getText().isEmpty()){throw new Exception("O ID despesas não pode ser nulo");}
+            int idMovimentacao = Integer.parseInt(jTextFieldIdMovimento.getText());
+            int IdVeiculo = Integer.parseInt(jTextFieldIdVeiculo.getText());
+            int idDespesa = Integer.parseInt(jTextFieldIdTipoDespesa.getText());
+            String descricao = jTextFieldDescricao.getText();
+            String data = jTextFieldData.getText();
+            double valor = Double.parseDouble(jTextFieldValor.getText().replace(",", "."));
 
-        Movimentacao m = new Movimentacao(idMovimentacao, IdVeiculo, idDespesa, descricao, data, valor);
-        controle.salvar(m);  // chama o controle → DAO
+            Movimentacao m = new Movimentacao(idMovimentacao, IdVeiculo, idDespesa, descricao, data, valor);
+            controle.salvar(m);  // chama o controle → DAO
 
-        JOptionPane.showMessageDialog(this, "Movimentação registrada com sucesso!");
-        exibirMovimentacoes();  // atualiza a tabela de baixo
-    } catch (Exception erro) {
-        JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-    }
+            JOptionPane.showMessageDialog(this, "Movimentação registrada com sucesso!");
+            exibirMovimentacoes();  // atualiza a tabela de baixo
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonRegistrarActionPerformed
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed

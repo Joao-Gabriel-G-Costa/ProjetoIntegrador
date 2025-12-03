@@ -16,6 +16,9 @@ public class ControleVeiculos implements IVeiculosCRUD {
     public void salvar(Veiculos veiculo) throws Exception {
         try {
             // Validações
+            if (veiculo.getIdVeiculo() <= 0) {
+                throw new Exception("O ID não ser menor ou igual a 0");
+            }
             if (veiculo.getPlaca() == null || veiculo.getPlaca().isEmpty()) {
                 throw new Exception("A placa não pode estar vazia!");
             }
@@ -23,7 +26,10 @@ public class ControleVeiculos implements IVeiculosCRUD {
                 throw new Exception("A marca não pode estar vazia!");
             }
             if (veiculo.getModelo() == null || veiculo.getModelo().isEmpty()) {
-                throw new Exception("O modelo não pode estar vazio!");
+                throw new Exception("O modelo não pode estar vazio!"); 
+            }
+            if (veiculo.getAnoFabricacao() == null || veiculo.getAnoFabricacao().isEmpty()) {
+                throw new Exception("O Ano de fabricação não pode estar vazio!"); 
             }
 
             // Verificar se ID já existe
