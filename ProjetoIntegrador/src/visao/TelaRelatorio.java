@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 package visao;
+import Persistencia.DespesasDAO;
 import Persistencia.RelatoriosDAO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import visao.MenuPrincipal;
 import java.util.ArrayList;
 import modelos.classes.Veiculos;
 import modelos.classes.Movimentacao;
+import modelos.classes.Despesas;
 
 /**
  *
@@ -26,6 +27,10 @@ public class TelaRelatorio extends javax.swing.JFrame {
     
     //OBJETO RELATORIODAO
     private RelatoriosDAO relDao = new RelatoriosDAO();
+    
+    //OBJETO DESPESAS
+    private DespesasDAO despDAO = new DespesasDAO();
+    
     
     
      //ATUALIZAR AS COLUNAS QUANDO O USUÁRIO ESCOLHE NO COMBOBOX
@@ -43,25 +48,41 @@ public class TelaRelatorio extends javax.swing.JFrame {
                     
           }
         
+        
         if ("Despesas de um veículo".equals(tipo)) {
             
             //MOSTRAR CAIXA PARA SELECIONAR O VEICULO
             cbVeiculos.setVisible(true);
+            cbVeiculos.setEnabled(true);
             
-            //duvida ?
-            cbVeiculos.removeAllItems(); // --> ?
+            //LIMPAR ITENS ANTIGOS E PLACEHOLDER
+            cbVeiculos.removeAllItems();
+            cbVeiculos.addItem("Selecione um veículo");
             
+            //PEGAR OS IDS DO RELATORIOSDAO
+            ArrayList<Veiculos> lista = relDao.listarVeiculos();
+            
+            for (Veiculos v : lista) {
+                
+                 cbVeiculos.addItem(String.valueOf(v.getIdVeiculo()));
+                
+            }
             
                     
-            
+            if ("Despesas de um veículo".equals(tipo)){
             DefaultTableModel model = new DefaultTableModel (
                     new Object [][]{},
-                    new String []{"ID","Descrição"}
+                    new String []{"ID","Tipo de Despesa","Descrição", "Valor"}
             
             );
             
             tabela.setModel (model);
-        
+            
+            }
+        }
+        else {
+            cbVeiculos.setVisible(false);
+            cbVeiculos.setEnabled(false);
         }
     }
     
@@ -118,21 +139,36 @@ public class TelaRelatorio extends javax.swing.JFrame {
             //LIMPAR LINHAS ANTIGAS
             model.setRowCount(0);
             
+            //pegar o ID DO DO VEICULO SELECIONADO NO COMBO
+            String selecionado = (String) cbVeiculos.getSelectedItem();
+           if (selecionado == null || selecionado.equals("Selecione um veículo")) {
+            JOptionPane.showMessageDialog(this, "Selecione um veículo!");
+            return;
+        }
+            
+           int idVeiculo = Integer.parseInt(selecionado); // sem split
+            
             //CHAMAR O RELATORIO DAO E despesasVeiculos
-            ArrayList<Movimentacao> lista = relDao.despesasVeiculos();
+            ArrayList<Movimentacao> lista = relDao.despesasVeiculos(idVeiculo);
             
              //SE ESTIVER VAZIO ----> EXCEÇÃO (FAZER EM CONTROLE)
            if (lista == null || lista.isEmpty()) {
-                 JOptionPane.showMessageDialog(this, "Não há veículos inativos na frota!");
+                 JOptionPane.showMessageDialog(this, "Esse veículo não possui despesas cadastradas!");
                  return;
              }
             
             //LAÇO PARA POR DADOS NA TABELA
             for (Movimentacao m : lista) {
-                model.addRow(new Object[] {
-                    
+               
+                Despesas d = despDAO.buscarPorId(m.getIdDespesa());
+                String tipoDespesa = (d != null) ? d.getDescricao() : "Não encontrado";
+
+                
+                model.addRow(new Object[] { 
                 m.getIdVeiculo(),
-                m.getDescricao()
+                tipoDespesa,
+                m.getDescricao(),
+                m.getValor()
             });
         }
 }
@@ -279,6 +315,12 @@ public class TelaRelatorio extends javax.swing.JFrame {
         if ("Veículos inativos".equals(tipo)){
            gerarRelatoriosInativos();
         }
+        
+        if ("Despesas de um veículo".equals(tipo)){
+           gerarDespesasVeiculo();
+        }
+        
+        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
