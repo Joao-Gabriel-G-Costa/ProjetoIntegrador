@@ -4,13 +4,17 @@
  * and open the template in the editor.
  */
 package visao;
+import persistencia.DespesasDAO;
 import persistencia.RelatoriosDAO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import visao.MenuPrincipal;
 import java.util.ArrayList;
 import modelos.classes.Veiculos;
 import modelos.classes.Movimentacao;
+import modelos.classes.Despesas;
+import persistencia.VeiculosDAO;
+
+
 
 /**
  *
@@ -26,11 +30,20 @@ public class TelaRelatorio extends javax.swing.JFrame {
     
     //OBJETO RELATORIODAO
     private RelatoriosDAO relDao = new RelatoriosDAO();
+    //OBJETO DESPESAS
+    private DespesasDAO despDAO = new DespesasDAO();
+    //private MovimentacaoDAO moviDAO = new MovimentacaoDAO();
+    private VeiculosDAO veiDAO = new VeiculosDAO();
+
     
     
      //ATUALIZAR AS COLUNAS QUANDO O USUÁRIO ESCOLHE NO COMBOBOX
     private void atualizarColunas() {
         String tipo = (String) cbTipoRelatorio.getSelectedItem();
+        
+        
+        cbVeiculos.setVisible(false);
+        cbVeiculos.setEnabled(false);
         
         if ("Veículos inativos".equals(tipo)) {
             
@@ -43,32 +56,70 @@ public class TelaRelatorio extends javax.swing.JFrame {
                     
           }
         
+        
         if ("Despesas de um veículo".equals(tipo)) {
             
             //MOSTRAR CAIXA PARA SELECIONAR O VEICULO
             cbVeiculos.setVisible(true);
+            cbVeiculos.setEnabled(true);
             
-            //duvida ?
-            cbVeiculos.removeAllItems(); // --> ?
+            //LIMPAR ITENS ANTIGOS E PLACEHOLDER
+            cbVeiculos.removeAllItems();
+            cbVeiculos.addItem("Selecione um veículo");
             
+            //PEGAR OS IDS DO RELATORIOSDAO
+            ArrayList<Veiculos> lista = relDao.listarVeiculos();
             
-                    
+            for (Veiculos v : lista) {
+                
+                 cbVeiculos.addItem(String.valueOf(v.getIdVeiculo()));
+                
+            }
             
+            //COMENTARIO        
+            if ("Despesas de um veículo".equals(tipo)){
             DefaultTableModel model = new DefaultTableModel (
                     new Object [][]{},
-                    new String []{"ID","Descrição"}
+                    new String []{"ID","Tipo de Despesa","Descrição", "Valor"}
             
             );
             
             tabela.setModel (model);
-        
+            
+            }
         }
-    }
+       
+        
+        
+         if ("Total geral de despesas da frota no mês".equals(tipo)){
+             
+            //MOSTRAR CAIXA PARA SELECIONAR O VEICULO
+            cbVeiculos.setVisible(true);
+            cbVeiculos.setEnabled(true);
+            
+            //LIMPAR ITENS ANTIGOS E PLACEHOLDER
+            cbVeiculos.removeAllItems();
+            cbVeiculos.addItem("Selecione um mês");
+            
+            
+            DefaultTableModel model = new DefaultTableModel (
+                    new Object [][]{},
+                    new String []{"IDVeiculo","Veiculo","Tipo Despesa", "Data", "Valor"}
+            
+            );
+        
     
+         } else {
+         
+         }
+
+   
+    } 
+
     public TelaRelatorio() {
         initComponents();
         
-        //QUANDO SELECIONA NA COMBOBOX A TABELA MUDA
+        //QUANDO SELECIONA NA COMBOBOX A TABELA MUDA ?
         cbTipoRelatorio.addActionListener(e -> atualizarColunas());
         
         
@@ -112,27 +163,42 @@ public class TelaRelatorio extends javax.swing.JFrame {
     }
     
     private void gerarDespesasVeiculo(){
-        try {
+       try {
             DefaultTableModel model = (DefaultTableModel) tabela.getModel();
             
             //LIMPAR LINHAS ANTIGAS
             model.setRowCount(0);
             
+            //pegar o ID DO DO VEICULO SELECIONADO NO COMBO
+            String selecionado = (String) cbVeiculos.getSelectedItem();
+           if (selecionado == null || selecionado.equals("Selecione um veículo")) {
+            JOptionPane.showMessageDialog(this, "Selecione um veículo!");
+            return;
+        }
+            
+           int idVeiculo = Integer.parseInt(selecionado); // sem split
+            
             //CHAMAR O RELATORIO DAO E despesasVeiculos
-            ArrayList<Movimentacao> lista = relDao.despesasVeiculos();
+            ArrayList<Movimentacao> lista = relDao.despesasVeiculos(idVeiculo);
             
              //SE ESTIVER VAZIO ----> EXCEÇÃO (FAZER EM CONTROLE)
            if (lista == null || lista.isEmpty()) {
-                 JOptionPane.showMessageDialog(this, "Não há veículos inativos na frota!");
+                 JOptionPane.showMessageDialog(this, "Esse veículo não possui despesas cadastradas!");
                  return;
              }
             
             //LAÇO PARA POR DADOS NA TABELA
             for (Movimentacao m : lista) {
-                model.addRow(new Object[] {
-                    
+               
+                Despesas d = despDAO.buscarPorId(m.getIdDespesa());
+                String tipoDespesa = (d != null) ? d.getDescricao() : "Não encontrado";
+
+                
+                model.addRow(new Object[] { 
                 m.getIdVeiculo(),
-                m.getDescricao()
+                tipoDespesa,
+                m.getDescricao(),
+                m.getValor()
             });
         }
 }
@@ -140,8 +206,71 @@ public class TelaRelatorio extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "ERRO AO GERAR RELATORIO" + e.getMessage());
                     
         }
+
     
     }
+    
+    //new String []{"IDVeiculo","Veiculo","Tipo Despesa", "Data", "Valor"}
+    
+    private void gerarDespesasMes () {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabela.getModel();
+            
+            //LIMPAR LINHAS ANTIGAS
+            model.setRowCount(0);
+            
+            //pegar o ID DO DO VEICULO SELECIONADO NO COMBO
+            String selecionado = (String) cbVeiculos.getSelectedItem();
+            
+           if (selecionado == null || selecionado.equals("Selecione um mês!")) {
+            JOptionPane.showMessageDialog(this, "Selecione um mês!");
+            return;
+            
+}
+            String data = selecionado; 
+            // sem split
+            
+            //CHAMAR O RELATORIO DAO E despesasVeiculos
+            ArrayList<Movimentacao> lista = relDao.despesasMes(data);
+            
+             //SE ESTIVER VAZIO ----> EXCEÇÃO (FAZER EM CONTROLE)
+           if (lista == null || lista.isEmpty()) {
+                 JOptionPane.showMessageDialog(this, "Não há despesas cadastradas nesse mês!");
+                 return;
+             }
+            
+            //LAÇO PARA POR DADOS NA TABELA
+            for (Movimentacao m : lista) {
+               
+                
+                //PARA PEGAR O TIPO DESPESA
+                Despesas d = despDAO.buscarPorId(m.getIdDespesa());
+                String tipoDespesa = (d != null) ? d.getDescricao() : "Não encontrado";
+                
+                //PARA PEGAR VEICULO
+                Veiculos v = relDao.buscarVeiculoPorId(m.getIdVeiculo());
+                String modelo = (v != null) ? v.getModelo() : "Não encontrado";
+
+                //new String []{"IDVeiculo","Veiculo","Tipo Despesa", "Data", "Valor"}
+                model.addRow(new Object[] { 
+                m.getIdVeiculo(),
+                modelo,
+                tipoDespesa,
+                m.getData(),
+                m.getValor()
+            });
+        }
+            
+        }
+           
+           
+           
+           catch (Exception e) {
+        }
+    
+    }
+    
+    
     
 
 
@@ -272,14 +401,20 @@ public class TelaRelatorio extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         //BOTÃO GERAR RELATORIO
+                 //BOTÃO GERAR RELATORIO
         String tipo = (String) cbTipoRelatorio.getSelectedItem();
         
         //DEPOIS FAZER EXCEÇÃO PARA MOSTRAR MESSAGEM QUE NAO TEM INATIVOS
         if ("Veículos inativos".equals(tipo)){
            gerarRelatoriosInativos();
         }
-
+        
+        if ("Despesas de um veículo".equals(tipo)){
+           gerarDespesasVeiculo();
+        }
+        
+        if ("Total geral de despesas da frota no mês".equals(tipo))
+            gerarDespesasMes();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -298,3 +433,4 @@ public class TelaRelatorio extends javax.swing.JFrame {
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 }
+
