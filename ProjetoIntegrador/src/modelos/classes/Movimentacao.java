@@ -1,5 +1,6 @@
 package modelos.classes;
 
+
 public class Movimentacao {
     private int idMovimentacao = 0;
     private int idVeiculo = 0;

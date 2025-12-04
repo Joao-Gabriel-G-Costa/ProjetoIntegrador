@@ -4,12 +4,34 @@ import persistencia.MovimentacaoDAO;
 import java.util.ArrayList;
 import modelos.classes.Movimentacao;
 import modelos.interfaces.IMovimentacaoCRUD;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class ControleMovimentacao implements IMovimentacaoCRUD {
 
     private MovimentacaoDAO dao = new MovimentacaoDAO();
 
-    public ControleMovimentacao() {}
+    public ControleMovimentacao() {
+    }
+    
+    public LocalDate converterData (String data) throws Exception {
+    
+    try {
+        if ( data == null || data.trim().isEmpty()) {
+        throw new Exception("Verifique o campo data! Precisa estar preenchido");
+        }
+         if (data.length() != 10) {
+        throw new Exception("Data inválida. Use o formato dd/MM/yyyy.");
+        }
+
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+        return LocalDate.parse(data, formato);
+    } catch (DateTimeParseException e) {
+        throw new Exception("Data inválida! Use o formato dd/MM/yyyy.");
+    }
+}
+    
 
     @Override
     public void salvar(Movimentacao mov) throws Exception {
