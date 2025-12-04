@@ -363,7 +363,6 @@ public class TelaDespesas extends javax.swing.JFrame {
     private void jTextFieldDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDescricaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldDescricaoActionPerformed
-    
     // Cuidado!!!!!!!!
     private void exibirDespesasNaTabela() {
     try {

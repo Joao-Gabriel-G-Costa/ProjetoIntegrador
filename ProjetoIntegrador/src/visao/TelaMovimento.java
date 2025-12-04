@@ -320,9 +320,7 @@ public class TelaMovimento extends javax.swing.JFrame {
                                 .addComponent(jButtonSelecionarIDVeiculo)))
                         .addGap(40, 40, 40)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jTextFieldIdMovimento, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
@@ -392,10 +390,11 @@ public class TelaMovimento extends javax.swing.JFrame {
                     .addComponent(jButtonSelecionarIDDespesa)
                     .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAlterar)
-                    .addComponent(jButtonRegistrar)
-                    .addComponent(jButtonDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonAlterar)
+                        .addComponent(jButtonRegistrar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -488,8 +487,7 @@ public class TelaMovimento extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog(this, "Atualização feita!");
             
-            exibirMovimentacaoSelecionada();
-            
+            exibirMovimentacoes();
             
     } catch (Exception erro) {
         JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro para atualização! Verifique os campos!", JOptionPane.ERROR_MESSAGE);
@@ -499,7 +497,22 @@ public class TelaMovimento extends javax.swing.JFrame {
 
     private void jButtonDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeletarActionPerformed
         // TODO add your handling code here:
-       
+       try {
+            int id = Integer.parseInt(jTextFieldIdMovimento.getText());
+            controle.remover(id); // chama o controle para remover
+            jTextFieldIdVeiculo.setText("");
+            jTextFieldIdTipoDespesa.setText("");
+            jTextFieldIdMovimento.setText("");
+            jTextFieldDescricao.setText("");
+            jTextFieldData.setText("");
+            jTextFieldValor.setText("");
+            
+            JOptionPane.showMessageDialog(this, "Movimento deletado com sucesso!");
+
+            exibirMovimentacoes(); // atualiza a tabela
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, "Verifique os campos!");
+        }
     }//GEN-LAST:event_jButtonDeletarActionPerformed
 
     private void jButtonSelecionarIDVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelecionarIDVeiculoActionPerformed
