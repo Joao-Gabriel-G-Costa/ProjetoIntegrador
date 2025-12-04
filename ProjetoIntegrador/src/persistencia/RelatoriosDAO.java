@@ -9,6 +9,11 @@ import modelos.classes.Movimentacao;
 import modelos.classes.Despesas; 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author heloi
@@ -41,7 +46,60 @@ public class RelatoriosDAO {
     }
     return null;
 }
+    
+    //PEGAR MES
+    public ArrayList<Movimentacao> despesasMes (int mes){
+        try {
+            ArrayList<Movimentacao> lista = moviDAO.listaDeMovimentacoes();
+            ArrayList<Movimentacao> filtradas = new ArrayList<>();
+            
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            
+            
+            for (Movimentacao m: lista) {
+                LocalDate data = LocalDate.parse(m.getData(), formato);
+                
+                //adicionar na lista
+                if (data.getMonthValue() == mes){
+                    filtradas.add(m);
+                }
+            }
+            
+            return filtradas;
+            
+        } catch (Exception e) {
+            
+            return null;
+        }
+    }
 
+    
+    //PEGAR ANO
+    public ArrayList<Movimentacao> despesasAno (int ano){
+        try {
+            ArrayList<Movimentacao> lista = moviDAO.listaDeMovimentacoes();
+            ArrayList<Movimentacao> filtradas = new ArrayList<>();
+            
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            
+            
+            for (Movimentacao m: lista) {
+                LocalDate data = LocalDate.parse(m.getData(), formato);
+                
+                //adicionar na lista
+                if (data.getYear() == ano){
+                    filtradas.add(m);
+                }
+            }
+            
+            return filtradas;
+            
+        } catch (Exception e) {
+            
+            return null;
+        }
+    }
+ 
     
    //INATIVOS
     public ArrayList<Veiculos> listarInativos(){
@@ -71,12 +129,7 @@ public class RelatoriosDAO {
         
     }
     
-    //DESPESAS REALIZADAS DE UM VEICULO
-    //A PESSOA POE O ID DO VEICULO
-    //VALIDO SE O ID EXISTE OU NAO ---> IMPORTANTE
-    //MOSTRA OS RESULTADOS
-    //ID; MARCA; MODELO; DESCRIÇÃO; 
-    //o método precisa receber um id do veículo (PARAMETRO)
+   
     public ArrayList<Movimentacao> despesasVeiculos(int idVeiculo){
         try {
             //public ArrayList<Movimentacao> listaDeMovimentacoes() 
@@ -102,18 +155,34 @@ public class RelatoriosDAO {
         }
     
     // Soma de todas as despesas de todos os veículos num mês específico.
-     public ArrayList<Movimentacao> despesasMes (String data){
+     public ArrayList<Movimentacao> despesasMes (String mes){
          try {
-             //o DAO lê o arquivo e devolve todas as movimentações ---> IDVEICULO VEICULO IDDESPESA DATA VALOR
+             
+             int mesFiltro = Integer.parseInt(mes); //NUMERO DO MES
+             
+             
+             
+            //o DAO lê o arquivo e devolve todas as movimentações ---> IDVEICULO VEICULO IDDESPESA DATA VALOR
             ArrayList<Movimentacao> lista = moviDAO.listaDeMovimentacoes();
             
-            
+      
             //nova lista
             ArrayList<Movimentacao> despesasMes = new ArrayList<>();//o método precisa receber um id do veículo
             
+            //FORMATO DATA
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            
+            
+            
+            
+            
              for (Movimentacao m : lista) {
-                  if (m.getData() == data){
-                despesasMes.add(m);
+                 LocalDate data = LocalDate.parse(m.getData(), formatter);
+                 
+                 
+                 
+                  if (data.getMonthValue() == mesFiltro){
+               despesasMes.add(m);
             }
             
             
@@ -122,20 +191,16 @@ public class RelatoriosDAO {
          
          
          } catch (Exception e) {
-                 return null;
+             //duvida ?
+                 return new ArrayList<>();
                  }
          }
+     
+     
+     
+     
 
-        //Total geral de despesas da frota no mês
-    //MOVIMENTACAO
-//    private int idMovimentacao = 0;
-//    private int idVeiculo = 0;
-//    private int idDespesa = 0;
-//    private String descricao = "";
-//    private String data = "";
-//    private double valor = 0;
-// USAR --> ID VEICULO IDDESPESA (TIPO DESPESA DA CLASSE "DESPESAS") DATA VALOR
-//Soma de todas as despesas de todos os veículos num mês específico.
+       
      
 
     }
