@@ -24,6 +24,7 @@ public class TelaDespesas extends javax.swing.JFrame {
      */
     public TelaDespesas() {
         initComponents();
+        jButtonLimpar.setEnabled(false);
         this.setLocationRelativeTo(null);
         exibirDespesasNaTabela();
         
@@ -51,8 +52,8 @@ public class TelaDespesas extends javax.swing.JFrame {
         jButtonExcluir = new javax.swing.JButton();
         jButtonIncluir = new javax.swing.JButton();
         jButtonUpdate = new javax.swing.JButton();
-        jButtonBuscar = new javax.swing.JButton();
         jButtonLimpar = new javax.swing.JButton();
+        jButtonBuscar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableSaida = new javax.swing.JTable();
@@ -103,16 +104,6 @@ public class TelaDespesas extends javax.swing.JFrame {
             }
         });
 
-        jButtonBuscar.setBackground(new java.awt.Color(102, 102, 102));
-        jButtonBuscar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButtonBuscar.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonBuscar.setText("Buscar");
-        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBuscarActionPerformed(evt);
-            }
-        });
-
         jButtonLimpar.setBackground(new java.awt.Color(102, 102, 102));
         jButtonLimpar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jButtonLimpar.setForeground(new java.awt.Color(255, 255, 255));
@@ -120,6 +111,16 @@ public class TelaDespesas extends javax.swing.JFrame {
         jButtonLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLimparActionPerformed(evt);
+            }
+        });
+
+        jButtonBuscar.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonBuscar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jButtonBuscar.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonBuscar.setText("Buscar");
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
             }
         });
 
@@ -133,8 +134,8 @@ public class TelaDespesas extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -146,9 +147,9 @@ public class TelaDespesas extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -365,6 +366,7 @@ public class TelaDespesas extends javax.swing.JFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
+        
         int linhaSelecionada = jTableSaida.getSelectedRow();
         if(linhaSelecionada != -1) {
         int id = Integer.parseInt(jTableSaida.getValueAt(linhaSelecionada, 0).toString());
@@ -381,7 +383,7 @@ public class TelaDespesas extends javax.swing.JFrame {
         
         jTextFieldIdentificador.setEnabled(true);
         exibirDespesasNaTabela();
-    } catch(Exception e) {
+    }    catch(Exception e) {
         JOptionPane.showMessageDialog(this, "Erro ao remover: " + e.getMessage());
         }
     }
@@ -415,6 +417,7 @@ public class TelaDespesas extends javax.swing.JFrame {
                     obj.getID(),
                     obj.getDescricao(),
                 });
+                jButtonLimpar.setEnabled(true);
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -426,6 +429,10 @@ public class TelaDespesas extends javax.swing.JFrame {
         jTextFieldIdentificador.setText("");
         jTextFieldDescricao.setText("");
         jTextFieldIdentificador.setEnabled(true);
+        
+        jButtonLimpar.setEnabled(false);
+        
+        exibirDespesasNaTabela();
     }//GEN-LAST:event_jButtonLimparActionPerformed
     // Cuidado!!!!!!!!
     private void exibirDespesasNaTabela() {

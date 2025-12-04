@@ -25,6 +25,7 @@ public class TelaMovimento extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         exibirMovimentacoes();
+        jButtonLimpar.setEnabled(false);
         jTextFieldIdVeiculo.setEnabled(false);
         jTextFieldIdTipoDespesa.setEnabled(false);
         
@@ -610,6 +611,7 @@ public class TelaMovimento extends javax.swing.JFrame {
                     obj.getData(),
                     obj.getValor()
                 });
+                jButtonLimpar.setEnabled(true);
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -618,6 +620,7 @@ public class TelaMovimento extends javax.swing.JFrame {
 
     private void jButtonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparActionPerformed
         // TODO add your handling code here:
+        
         jTextFieldIdMovimento.setText("");
         jTextFieldIdVeiculo.setText("");
         jTextFieldIdTipoDespesa.setText("");
