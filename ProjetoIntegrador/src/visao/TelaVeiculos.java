@@ -68,6 +68,8 @@ public class TelaVeiculos extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableSaida = new javax.swing.JTable();
+        jButtonBuscar = new javax.swing.JButton();
+        jButtonLimpar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JANELA @");
@@ -217,6 +219,26 @@ public class TelaVeiculos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTableSaida);
 
+        jButtonBuscar.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonBuscar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jButtonBuscar.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonBuscar.setText("Buscar");
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
+            }
+        });
+
+        jButtonLimpar.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonLimpar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jButtonLimpar.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLimpar.setText("Limpar");
+        jButtonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimparActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -261,7 +283,11 @@ public class TelaVeiculos extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addGap(443, 443, 443)
+                                .addGap(237, 237, 237)
+                                .addComponent(jButtonLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -301,7 +327,9 @@ public class TelaVeiculos extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDeletar)
                     .addComponent(jButtonAlterar)
-                    .addComponent(jButtonRegistrar))
+                    .addComponent(jButtonRegistrar)
+                    .addComponent(jButtonBuscar)
+                    .addComponent(jButtonLimpar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65))
@@ -349,7 +377,6 @@ public class TelaVeiculos extends javax.swing.JFrame {
             Veiculos v = new Veiculos(id, placa, marca, modelo, ano, situacao);
             controle.salvar(v);
             
-            jTextFieldIDVeiculo.setEnabled(false);
 
             jTextFieldIDVeiculo.setText("");
             jTextFieldPlaca.setText("");
@@ -358,7 +385,7 @@ public class TelaVeiculos extends javax.swing.JFrame {
             jTextFieldAnoFabricacao.setText("");
 
             JOptionPane.showMessageDialog(this, "Veículo cadastrado com sucesso!");
-
+            jTextFieldIDVeiculo.setEnabled(true);
             exibirVeiculos();
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -378,7 +405,7 @@ public class TelaVeiculos extends javax.swing.JFrame {
             jComboSituacao.setSelectedIndex(0);
             
             JOptionPane.showMessageDialog(this, "Veiculo deletado com sucesso!");
-
+            jTextFieldIDVeiculo.setEnabled(true);
             exibirVeiculos(); // atualiza a tabela
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(rootPane, "Verifique os campos!");
@@ -404,7 +431,7 @@ public class TelaVeiculos extends javax.swing.JFrame {
             jTextFieldMarca.setText("");
             jTextFieldModelo.setText("");
             jTextFieldAnoFabricacao.setText("");
-
+            jTextFieldIDVeiculo.setEnabled(true);
             JOptionPane.showMessageDialog(this, "Veículo atualizado com sucesso!");
 
             exibirVeiculos();
@@ -416,6 +443,54 @@ public class TelaVeiculos extends javax.swing.JFrame {
     private void jTextFieldIDVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIDVeiculoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldIDVeiculoActionPerformed
+
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        // TODO add your handling code here:
+            try {
+                if (jTextFieldIDVeiculo.getText().trim().isEmpty()) {
+                    throw new Exception("Informe um ID para buscar.");
+                }
+
+                int id = Integer.parseInt(jTextFieldIDVeiculo.getText().trim());
+
+                // usa o controle já instanciado na tela
+                Veiculos obj = controle.buscarPorId(id);
+
+                if (obj == null) {
+                    JOptionPane.showMessageDialog(this, "Nenhum veículo encontrado com esse ID.");
+                    return;
+                }
+
+                // limpa tabela
+                DefaultTableModel modelo = (DefaultTableModel) jTableSaida.getModel();
+                modelo.setRowCount(0);
+
+                // adiciona resultado na tabela
+                String situacaoStr = obj.isSituacao() ? "Ativo" : "Inativo";
+
+                modelo.addRow(new Object[]{
+                    obj.getIdVeiculo(),
+                    obj.getPlaca(),
+                    obj.getMarca(),
+                    obj.getModelo(),
+                    obj.getAnoFabricacao(),
+                    situacaoStr
+                });
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void jButtonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparActionPerformed
+        // TODO add your handling code here:
+        jTextFieldIDVeiculo.setText("");
+        jTextFieldPlaca.setText("");
+        jTextFieldMarca.setText("");
+        jTextFieldModelo.setText("");
+        jTextFieldAnoFabricacao.setText("");
+        jTextFieldIDVeiculo.setEnabled(true);
+    }//GEN-LAST:event_jButtonLimparActionPerformed
 
     private void exibirVeiculos() {
      try {
@@ -448,6 +523,7 @@ public class TelaVeiculos extends javax.swing.JFrame {
      private void exibirDadosSelecionados() {
     int linhaSelecionada = jTableSaida.getSelectedRow();
     if (linhaSelecionada != -1) {
+        jTextFieldIDVeiculo.setEnabled(false);
         String id = jTableSaida.getValueAt(linhaSelecionada, 0).toString();
         String placa = jTableSaida.getValueAt(linhaSelecionada, 1).toString();
         String marca = jTableSaida.getValueAt(linhaSelecionada, 2).toString();
@@ -473,7 +549,9 @@ public class TelaVeiculos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAlterar;
+    private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonDeletar;
+    private javax.swing.JButton jButtonLimpar;
     private javax.swing.JButton jButtonRegistrar;
     private javax.swing.JButton jButtonVoltar;
     private javax.swing.JComboBox<String> jComboSituacao;

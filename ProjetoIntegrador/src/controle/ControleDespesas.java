@@ -61,6 +61,7 @@ public class ControleDespesas implements IDespesasCRUD {
 
     @Override
     public void remover(int idTipoDeDespesa) throws Exception {
+        
         dao.remover(idTipoDeDespesa);
     }
 

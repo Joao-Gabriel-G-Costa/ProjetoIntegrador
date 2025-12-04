@@ -25,6 +25,7 @@ public class TelaMovimento extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         exibirMovimentacoes();
+        jButtonLimpar.setEnabled(false);
         jTextFieldIdVeiculo.setEnabled(false);
         jTextFieldIdTipoDespesa.setEnabled(false);
         
@@ -74,6 +75,8 @@ public class TelaMovimento extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableSaidaMovimentacao = new javax.swing.JTable();
         jButtonDeletar = new javax.swing.JButton();
+        jButtonBuscar = new javax.swing.JButton();
+        jButtonLimpar = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -302,6 +305,26 @@ public class TelaMovimento extends javax.swing.JFrame {
             }
         });
 
+        jButtonBuscar.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonBuscar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jButtonBuscar.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonBuscar.setText("Buscar");
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
+            }
+        });
+
+        jButtonLimpar.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonLimpar.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jButtonLimpar.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonLimpar.setText("Limpar");
+        jButtonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimparActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -320,12 +343,19 @@ public class TelaMovimento extends javax.swing.JFrame {
                                 .addComponent(jButtonSelecionarIDVeiculo)))
                         .addGap(40, 40, 40)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+<<<<<<< HEAD
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jTextFieldIdMovimento, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
+=======
+>>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButtonLimpar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonBuscar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonRegistrar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,7 +369,12 @@ public class TelaMovimento extends javax.swing.JFrame {
                                     .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel7)
-                                .addGap(232, 232, 232))))
+                                .addGap(232, 232, 232))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldIdMovimento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,7 +429,13 @@ public class TelaMovimento extends javax.swing.JFrame {
                     .addComponent(jButtonDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButtonAlterar)
+<<<<<<< HEAD
                         .addComponent(jButtonRegistrar)))
+=======
+                        .addComponent(jButtonRegistrar)
+                        .addComponent(jButtonBuscar)
+                        .addComponent(jButtonLimpar)))
+>>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -453,8 +494,8 @@ public class TelaMovimento extends javax.swing.JFrame {
             controle.salvar(m);  // chama o controle → DAO
             
             
-            jTextFieldIdMovimento.setEnabled(false);
 
+            jTextFieldIdMovimento.setEnabled(true);
             JOptionPane.showMessageDialog(this, "Movimentação registrada com sucesso!");
             exibirMovimentacoes();  // atualiza a tabela de baixo
         } catch (Exception erro) {
@@ -486,9 +527,8 @@ public class TelaMovimento extends javax.swing.JFrame {
             
             
             JOptionPane.showMessageDialog(this, "Atualização feita!");
-            
-            exibirMovimentacaoSelecionada();
-            
+            jTextFieldIdMovimento.setEnabled(true);
+            exibirMovimentacoes();
             
     } catch (Exception erro) {
         JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro para atualização! Verifique os campos!", JOptionPane.ERROR_MESSAGE);
@@ -498,7 +538,22 @@ public class TelaMovimento extends javax.swing.JFrame {
 
     private void jButtonDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeletarActionPerformed
         // TODO add your handling code here:
-       
+       try {
+            int id = Integer.parseInt(jTextFieldIdMovimento.getText());
+            controle.remover(id); // chama o controle para remover
+            jTextFieldIdVeiculo.setText("");
+            jTextFieldIdTipoDespesa.setText("");
+            jTextFieldIdMovimento.setText("");
+            jTextFieldDescricao.setText("");
+            jTextFieldData.setText("");
+            jTextFieldValor.setText("");
+            
+            JOptionPane.showMessageDialog(this, "Movimento deletado com sucesso!");
+            jTextFieldIdMovimento.setEnabled(true);
+            exibirMovimentacoes(); // atualiza a tabela
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, "Verifique os campos!");
+        }
     }//GEN-LAST:event_jButtonDeletarActionPerformed
 
     private void jButtonSelecionarIDVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelecionarIDVeiculoActionPerformed
@@ -540,6 +595,52 @@ public class TelaMovimento extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldDataActionPerformed
 
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        // TODO add your handling code here:
+            try {
+                if (jTextFieldIdMovimento.getText().trim().isEmpty()) {
+                    throw new Exception("Informe um ID de movimentação para buscar.");
+                }
+
+                int id = Integer.parseInt(jTextFieldIdMovimento.getText().trim());
+
+                Movimentacao obj = controle.buscarPorId(id);
+
+                if (obj == null) {
+                    JOptionPane.showMessageDialog(this, "Nenhuma movimentação encontrada com esse ID.");
+                    return;
+                }
+
+                DefaultTableModel modelo = (DefaultTableModel) jTableSaidaMovimentacao.getModel();
+                modelo.setRowCount(0);
+
+                modelo.addRow(new Object[]{
+                    obj.getIdMovimentacao(),
+                    obj.getIdVeiculo(),
+                    obj.getIdDespesa(),
+                    obj.getDescricao(),
+                    obj.getData(),
+                    obj.getValor()
+                });
+                jButtonLimpar.setEnabled(true);
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void jButtonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparActionPerformed
+        // TODO add your handling code here:
+        
+        jTextFieldIdMovimento.setText("");
+        jTextFieldIdVeiculo.setText("");
+        jTextFieldIdTipoDespesa.setText("");
+        jTextFieldDescricao.setText("");
+        jTextFieldData.setText("");
+        jTextFieldValor.setText("");
+        jTextFieldIdMovimento.setEnabled(true);
+    }//GEN-LAST:event_jButtonLimparActionPerformed
+
 
 
 private void exibirMovimentacoes() {
@@ -575,6 +676,7 @@ private void exibirDadoSelecionadoEmCampo(javax.swing.JTable tabela, int colunaI
 private void exibirMovimentacaoSelecionada() {
     int linhaSelecionada = jTableSaidaMovimentacao.getSelectedRow();
     if (linhaSelecionada != -1) {
+        jTextFieldIdMovimento.setEnabled(false);
         jTextFieldIdMovimento.setText(
             jTableSaidaMovimentacao.getValueAt(linhaSelecionada, 0).toString()
         );
@@ -610,7 +712,9 @@ public void setIdDespesaSelecionada(String id) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAlterar;
+    private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonDeletar;
+    private javax.swing.JButton jButtonLimpar;
     private javax.swing.JButton jButtonRegistrar;
     private javax.swing.JButton jButtonSelecionarIDDespesa;
     private javax.swing.JButton jButtonSelecionarIDVeiculo;

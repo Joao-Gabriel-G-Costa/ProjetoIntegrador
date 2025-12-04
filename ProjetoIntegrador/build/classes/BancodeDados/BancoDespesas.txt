@@ -1,4 +1,10 @@
 2;Manutenção
+<<<<<<< HEAD
 1;Combustivel 
 3;Iptu
 4;Multa
+=======
+1;Combustível 
+4;MULTA
+3;IPVA
+>>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730

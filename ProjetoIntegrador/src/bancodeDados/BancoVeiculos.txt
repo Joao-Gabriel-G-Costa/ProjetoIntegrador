@@ -1,7 +1,20 @@
 1;252GH;HYUNDAI;HB20;2017;true
 2;HSUS8;FIAT;ARGO;2008;true
 3;8272B;RENAULT;KWID;2009;false
+<<<<<<< HEAD
 52;ASDASD;sadasd;dasdas;52;true
+=======
+52;ASDASD;sadasd;dasd;52;true
+>>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730
 55;ASDA1231212;abc;asdasd;123;true
-20;56ONT;TESTE;TESTANDO;2015;true
+20;56ONT;TESTE;TESTAND;2015;false
+59;ASDAS;asdasd;dasd;1123123;false
+22;ASDAS;asdasd;dasd;1123123;false
+60;4566456;volks;c-890;2013;true
+32;ASDA1231212;abc;asdasd;123;true
+20;56ONT;TESTE;TESTAND;2015;false
 59;ONT785;TESTANDO;TESTE;2016;true
+<<<<<<< HEAD
+=======
+123;ASD;asd;asd;14123;true
+>>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730
