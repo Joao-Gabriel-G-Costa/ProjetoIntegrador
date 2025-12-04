@@ -22,7 +22,7 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
     private String nomeDoArquivoNoDisco = null;
 
     public MovimentacaoDAO() {
-        nomeDoArquivoNoDisco = "./src/bancodedados/BancoMovimento.txt";
+        nomeDoArquivoNoDisco = "./src/bancodeDados/BancoMovimento.txt";
     }
 
     @Override
@@ -117,11 +117,14 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
 
             FileWriter fw = new FileWriter(nomeDoArquivoNoDisco);
             BufferedWriter bw = new BufferedWriter(fw);
+            
 
             for (Movimentacao obj : lista) {
                 if (obj.getIdMovimentacao()== movimentacoes.getIdMovimentacao()) {
                     bw.write(
                         movimentacoes.getIdMovimentacao() + ";" +
+                        movimentacoes.getIdVeiculo() + ";" +
+                        movimentacoes.getIdDespesa() + ";" +
                         movimentacoes.getDescricao()+ ";" + 
                         movimentacoes.getData()+ ";" +
                         movimentacoes.getValor()+ "\n"
