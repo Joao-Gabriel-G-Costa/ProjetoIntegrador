@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/joaocosta/Documents/PIProjeto/ProjetoIntegrador/ProjetoIntegrador/src/visao/MenuPrincipal.java</file>
-            <file>file:/C:/Users/joaocosta/Documents/PIProjeto/ProjetoIntegrador/ProjetoIntegrador/src/modelos/classes/Veiculos.java</file>
-            <file>file:/C:/Users/joaocosta/Documents/PIProjeto/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaMovimento.java</file>
-            <file>file:/C:/Users/joaocosta/Documents/PIProjeto/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaVeiculos.java</file>
-            <file>file:/C:/Users/joaocosta/Documents/PIProjeto/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaDespesas.java</file>
-            <file>file:/C:/Users/joaocosta/Documents/PIProjeto/ProjetoIntegrador/ProjetoIntegrador/src/modelos/classes/Despesas.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaVeiculos.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleRelatorios.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleVeiculos.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/modelos/interfaces/IRelatorios.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaRelatorio.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaMovimento.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaDespesas.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/RelatoriosDAO.java</file>
+            <file>file:/C:/Users/alice/OneDrive/Documentos/GitHub/PROJETO/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleMovimentacao.java</file>
         </group>
     </open-files>
 </project-private>

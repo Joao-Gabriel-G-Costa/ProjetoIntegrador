@@ -469,17 +469,11 @@ public class TelaMovimento extends javax.swing.JFrame {
             int IdVeiculo = Integer.parseInt(jTextFieldIdVeiculo.getText());
             int idDespesa = Integer.parseInt(jTextFieldIdTipoDespesa.getText());
             String descricao = jTextFieldDescricao.getText();
-            
-            String data = jTextFieldData.getText();
-            DateTimeFormatter dataCerta = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataConvertida;// = controle.converterData(data);
-            dataConvertida = LocalDate.parse(data, dataCerta);
-            
-//            jTextFieldData.setText(dataConvertida.format(dataCerta));
+            String data = jTextFieldData.getText();      
             double valor = Double.parseDouble(jTextFieldValor.getText().replace(",", "."));
             
 
-            Movimentacao m = new Movimentacao(idMovimentacao, IdVeiculo, idDespesa, descricao, dataConvertida.format(dataCerta), valor);
+            Movimentacao m = new Movimentacao(idMovimentacao, IdVeiculo, idDespesa, descricao, data, valor);
             controle.salvar(m);  // chama o controle → DAO
             
             
