@@ -24,6 +24,9 @@ public class TelaMovimento extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
+        
+        jTextFieldData.setText("05/12/2025");
+        
         exibirMovimentacoes();
         //jButtonLimpar.setEnabled(false);
         jTextFieldIdVeiculo.setEnabled(false);
@@ -576,10 +579,12 @@ public class TelaMovimento extends javax.swing.JFrame {
 
     private void jTextFieldDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDataActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTextFieldDataActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         // TODO add your handling code here:
+        
             try {
                 if (jTextFieldIdMovimento.getText().trim().isEmpty()) {
                     throw new Exception("Informe um ID de movimentação para buscar.");
