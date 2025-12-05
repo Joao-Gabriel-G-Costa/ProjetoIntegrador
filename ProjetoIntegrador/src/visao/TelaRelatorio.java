@@ -1,18 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visao;
-import persistencia.DespesasDAO;
-import persistencia.RelatoriosDAO;
+
+import controle.ControleRelatorios;
 import java.util.ArrayList;
 import modelos.classes.Veiculos;
 import modelos.classes.Movimentacao;
 import modelos.classes.Despesas;
-import persistencia.VeiculosDAO;
+import persistencia.DespesasDAO;
 
-//IMPORTS PDF
+// IMPORTS PDF (mantidos)
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -24,243 +19,254 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 import java.io.FileOutputStream;
 import java.io.File;
 
-
-//IMPORTS PDF
-
-
-
-/**
- *
- * @author eugeniojulio
- */
 public class TelaRelatorio extends javax.swing.JFrame {
     
-    /**
-     * Creates new form Relatorio
-     * 
-     */
-    
-    
-    //OBJETO RELATORIODAO
-    private RelatoriosDAO relDao = new RelatoriosDAO();
-    //OBJETO DESPESAS
+    private ControleRelatorios controle = new ControleRelatorios();
     private DespesasDAO despDAO = new DespesasDAO();
-    //private MovimentacaoDAO moviDAO = new MovimentacaoDAO();
-    private VeiculosDAO veiDAO = new VeiculosDAO();
-
     
-    
-     //ATUALIZAR AS COLUNAS QUANDO O USUÁRIO ESCOLHE NO COMBOBOX
-private void atualizarColunas() {
-    String tipo = (String) cbTipoRelatorio.getSelectedItem();
-
-    cbVariavel.setVisible(false);
-    cbVariavel.setEnabled(false);
-
-    if ("Veículos inativos".equals(tipo)) {
-        return;
-    }
-
-    if ("Despesas de um veículo".equals(tipo) 
-        || "Multas pagas por veículo no ano".equals(tipo)) {
-
-        cbVariavel.setVisible(true);
-        cbVariavel.setEnabled(true);
-
-        cbVariavel.removeAllItems();
-        cbVariavel.addItem("Selecione um veículo");
-
-        ArrayList<Veiculos> lista = relDao.listarVeiculos();
-
-        for (Veiculos v : lista) {
-            cbVariavel.addItem(String.valueOf(v.getIdVeiculo()));
-        }
-
-        return;
-    }
-
-    // Meses usados pelos relatórios por mês
-    if ("Total geral de despesas da frota no mês".equals(tipo)
-            || "Total de gastos com combustível no mês".equals(tipo)) {
-        cbVariavel.setVisible(true);
-        cbVariavel.setEnabled(true);
-
-        cbVariavel.removeAllItems();
-        cbVariavel.addItem("Selecione um mês");
-        cbVariavel.addItem("01 - Janeiro");
-        cbVariavel.addItem("02 - Fevereiro");
-        cbVariavel.addItem("03 - Março");
-        cbVariavel.addItem("04 - Abril");
-        cbVariavel.addItem("05 - Maio");
-        cbVariavel.addItem("06 - Junho");
-        cbVariavel.addItem("07 - Julho");
-        cbVariavel.addItem("08 - Agosto");
-        cbVariavel.addItem("09 - Setembro");
-        cbVariavel.addItem("10 - Outubro");
-        cbVariavel.addItem("11 - Novembro");
-        cbVariavel.addItem("12 - Dezembro");
-
-        return;
-    }
-}
-
-   
-
-      public TelaRelatorio() {
+    public TelaRelatorio() {
         initComponents();
         
-        //QUANDO SELECIONA NA COMBOBOX A TABELA MUDA ?
+        // QUANDO SELECIONA NA COMBOBOX A TABELA MUDA
         cbTipoRelatorio.addActionListener(e -> atualizarColunas());
         atualizarColunas();
         
         this.setLocationRelativeTo(null);
-
     }
     
-   
+    private void atualizarColunas() {
+        String tipo = (String) cbTipoRelatorio.getSelectedItem();
+
+        cbVariavel.setVisible(false);
+        cbVariavel.setEnabled(false);
+
+        if ("Veículos inativos".equals(tipo)) {
+            return;
+        }
+
+        if ("Despesas de um veículo".equals(tipo) 
+            || "Multas pagas por veículo no ano".equals(tipo)) {
+
+            cbVariavel.setVisible(true);
+            cbVariavel.setEnabled(true);
+
+            cbVariavel.removeAllItems();
+            cbVariavel.addItem("Selecione um veículo");
+
+            try {
+                ArrayList<Veiculos> lista = controle.listarVeiculosParaCombo();
+                for (Veiculos v : lista) {
+                    cbVariavel.addItem(String.valueOf(v.getIdVeiculo()));
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, 
+                    "Erro ao carregar veículos: " + e.getMessage());
+            }
+
+            return;
+        }
+
+        // Meses usados pelos relatórios por mês
+        if ("Total geral de despesas da frota no mês".equals(tipo)
+                || "Total de gastos com combustível no mês".equals(tipo)) {
+            cbVariavel.setVisible(true);
+            cbVariavel.setEnabled(true);
+
+            cbVariavel.removeAllItems();
+            cbVariavel.addItem("Selecione um mês");
+            cbVariavel.addItem("01 - Janeiro");
+            cbVariavel.addItem("02 - Fevereiro");
+            cbVariavel.addItem("03 - Março");
+            cbVariavel.addItem("04 - Abril");
+            cbVariavel.addItem("05 - Maio");
+            cbVariavel.addItem("06 - Junho");
+            cbVariavel.addItem("07 - Julho");
+            cbVariavel.addItem("08 - Agosto");
+            cbVariavel.addItem("09 - Setembro");
+            cbVariavel.addItem("10 - Outubro");
+            cbVariavel.addItem("11 - Novembro");
+            cbVariavel.addItem("12 - Dezembro");
+
+            return;
+        }
+    }
     
-    private ResultadoRelatorio gerarRelatoriosInativos() {
-    try {
-        ArrayList<Veiculos> lista = relDao.listarInativos();
+    // Método para gerar PDF (mantido, mas agora recebe objetos do controle)
+    private void gerarPdf(String caminhoArquivo,
+                          String tituloRelatorio,
+                          String[] colunas,
+                          ArrayList<String[]> linhas,
+                          Double totalOpcional) {
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(caminhoArquivo));
+            document.open();
+            
+            Rectangle rect = new Rectangle(document.getPageSize());
+            rect.setBorder(Rectangle.BOX);
+            rect.setBorderColor(BaseColor.RED);
+            rect.setBorderWidth(20);
+            document.add(rect);
 
-        if (lista == null || lista.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Não há veículos inativos na frota!");
-            return null;
+            // TÍTULO
+            Font tituloFont = new Font(Font.FontFamily.HELVETICA, 30, Font.BOLD);
+            Paragraph titulo = new Paragraph(tituloRelatorio, tituloFont);
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            document.add(titulo);
+            document.add(new Paragraph(" "));
+
+            // TABELA
+            PdfPTable table = new PdfPTable(colunas.length);
+            table.setWidthPercentage(100);
+
+            Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+            Font cellFont   = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
+
+            // Cabeçalho
+            for (String col : colunas) {
+                PdfPCell cell = new PdfPCell(new Paragraph(col, headerFont));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+            }
+
+            // Linhas
+            for (String[] linha : linhas) {
+                for (String valor : linha) {
+                    table.addCell(new Paragraph(valor, cellFont));
+                }
+            }
+
+            document.add(table);
+
+            // Mostra TOTAL caso exista
+            if (totalOpcional != null) {
+                document.add(new Paragraph(" "));
+                Font totalFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+                document.add(new Paragraph("Total: R$ " + totalOpcional, totalFont));
+            }
+
+            document.close();
+            JOptionPane.showMessageDialog(this, "PDF gerado com sucesso em: " + caminhoArquivo);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao gerar PDF: " + e.getMessage());
         }
-
-        // COLUNAS
-        String[] colunas = { "ID", "Placa", "Marca", "Modelo", "Ano", "Situação" };
-
-        // LINHAS
-        ArrayList<String[]> linhas = new ArrayList<>();
-
-        for (Veiculos v : lista) {
-            linhas.add(new String[]{
-                String.valueOf(v.getIdVeiculo()),
-                v.getPlaca(),
-                v.getMarca(),
-                v.getModelo(),
-                String.valueOf(v.getAnoFabricacao()),
-                "Inativo"
-            });
-        }
-
-        return new ResultadoRelatorio(colunas, linhas, null); // sem total
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "ERRO AO GERAR RELATÓRIO: " + e.getMessage());
-        return null;
     }
-}
-
     
-  private ResultadoRelatorio gerarRelatorioDespesasVeiculo() {
-    try {
-        String selecionado = (String) cbVariavel.getSelectedItem();
+    // Método auxiliar para preparar dados de veículos inativos
+    private ResultadoFormatado prepararRelatorioInativos() {
+        try {
+            ArrayList<Veiculos> lista = controle.gerarRelatorioInativos();
+            
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Não há veículos inativos na frota!");
+                return null;
+            }
 
-        if (selecionado == null || selecionado.equals("Selecione um veículo")) {
-            JOptionPane.showMessageDialog(this, "Selecione um veículo!");
+            String[] colunas = { "ID", "Placa", "Marca", "Modelo", "Ano", "Situação" };
+            ArrayList<String[]> linhas = new ArrayList<>();
+
+            for (Veiculos v : lista) {
+                linhas.add(new String[]{
+                    String.valueOf(v.getIdVeiculo()),
+                    v.getPlaca(),
+                    v.getMarca(),
+                    v.getModelo(),
+                    String.valueOf(v.getAnoFabricacao()),
+                    "Inativo"
+                });
+            }
+
+            return new ResultadoFormatado(colunas, linhas, null);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
             return null;
         }
-
-        int idVeiculo = Integer.parseInt(selecionado);
-
-        ArrayList<Movimentacao> lista = relDao.despesasVeiculos(idVeiculo);
-
-        if (lista == null || lista.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Esse veículo não possui despesas cadastradas!");
-            return null;
-        }
-
-        // COLUNAS
-        String[] colunas = { "ID Veículo", "Tipo de Despesa", "Descrição", "Valor" };
-
-        // LINHAS
-        ArrayList<String[]> linhas = new ArrayList<>();
-
-        double total = 0;
-
-        for (Movimentacao m : lista) {
-            Despesas d = despDAO.buscarPorId(m.getIdDespesa());
-            String tipoDespesa = (d != null) ? d.getDescricao() : "Não encontrado";
-
-            total += m.getValor();
-
-            linhas.add(new String[]{
-                String.valueOf(m.getIdVeiculo()),
-                tipoDespesa,
-                m.getDescricao(),
-                String.valueOf(m.getValor())
-            });
-        }
-
-        return new ResultadoRelatorio(colunas, linhas, total);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "ERRO AO GERAR RELATÓRIO: " + e.getMessage());
-        return null;
     }
-}
+    
+    // Método auxiliar para preparar dados de despesas por veículo
+    private ResultadoFormatado prepararRelatorioDespesasVeiculo(int idVeiculo) {
+        try {
+            ControleRelatorios.ResultadoRelatorioVeiculo resultado = 
+                controle.gerarRelatorioDespesasVeiculo(idVeiculo);
+            
+            if (resultado.movimentacoes.isEmpty()) {
+                JOptionPane.showMessageDialog(this, 
+                    "Esse veículo não possui despesas cadastradas!");
+                return null;
+            }
 
-    //OBJETO PARA RETORNAR LISTA + TOTAL
-public class ResultadoDespesasMes {
-    public ArrayList<Movimentacao> lista;
-    public double total;
+            String[] colunas = { "ID Veículo", "Tipo de Despesa", "Descrição", "Valor" };
+            ArrayList<String[]> linhas = new ArrayList<>();
 
-    public ResultadoDespesasMes(ArrayList<Movimentacao> lista, double total) {
-        this.lista = lista;
-        this.total = total;
+            for (Movimentacao m : resultado.movimentacoes) {
+                Despesas d = despDAO.buscarPorId(m.getIdDespesa());
+                String tipoDespesa = (d != null) ? d.getDescricao() : "Não encontrado";
+
+                linhas.add(new String[]{
+                    String.valueOf(m.getIdVeiculo()),
+                    tipoDespesa,
+                    m.getDescricao(),
+                    String.valueOf(m.getValor())
+                });
+            }
+
+            return new ResultadoFormatado(colunas, linhas, resultado.total);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
+            return null;
+        }
     }
-}
+    
+    // Classe auxiliar para resultados formatados
+    class ResultadoFormatado {
+        String[] colunas;
+        ArrayList<String[]> linhas;
+        Double total;
 
-
-private ResultadoRelatorio gerarDespesasMes() {
+        public ResultadoFormatado(String[] colunas, ArrayList<String[]> linhas, Double total) {
+            this.colunas = colunas;
+            this.linhas = linhas;
+            this.total = total;
+        }
+    }
+    
+    // Método auxiliar para preparar dados de despesas por mês
+private ResultadoFormatado prepararRelatorioDespesasMes(int mes) {
     try {
-        // Pegar o mês selecionado
-        String selecionado = (String) cbVariavel.getSelectedItem();
-
-        if (selecionado == null || selecionado.equals("Selecione um mês")) {
-            JOptionPane.showMessageDialog(this, "Selecione um mês");
+        ControleRelatorios.ResultadoRelatorioPeriodo resultado = 
+            controle.gerarRelatorioDespesasMes(mes);
+        
+        if (resultado.movimentacoes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Não há despesas cadastradas para este mês!");
             return null;
         }
 
-        int mes = Integer.parseInt(selecionado.substring(0, 2));
-
-        // Buscar todas as movimentações do mês
-        ArrayList<Movimentacao> lista = relDao.despesasMes(mes);
-
-        if (lista == null || lista.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Não há despesas cadastradas nesse mês!");
-            return null;
-        }
-
-        // Definir colunas do relatório
         String[] colunas = { "ID Veículo", "Veículo", "Tipo Despesa", "Data", "Valor" };
         ArrayList<String[]> linhas = new ArrayList<>();
 
-        double total = 0;
-
-        for (Movimentacao m : lista) {
-
+        for (Movimentacao m : resultado.movimentacoes) {
             // Tipo despesa
             Despesas d = despDAO.buscarPorId(m.getIdDespesa());
             String tipoDespesa = (d != null) ? d.getDescricao() : "Não encontrado";
 
             // Veículo
-            Veiculos v = relDao.buscarVeiculoPorId(m.getIdVeiculo());
+            Veiculos v = null;
+            try {
+                v = controle.buscarVeiculoPorId(m.getIdVeiculo());
+            } catch (Exception e) {
+                // Se não encontrar, continua
+            }
             String modelo = (v != null) ? v.getModelo() : "Não encontrado";
 
-            // Soma
-            total += m.getValor();
-
-            // Adicionar linha na lista final
-            linhas.add(new String[] {
+            linhas.add(new String[]{
                 String.valueOf(m.getIdVeiculo()),
                 modelo,
                 tipoDespesa,
@@ -269,7 +275,7 @@ private ResultadoRelatorio gerarDespesasMes() {
             });
         }
 
-        return new ResultadoRelatorio(colunas, linhas, total);
+        return new ResultadoFormatado(colunas, linhas, resultado.total);
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
@@ -277,162 +283,116 @@ private ResultadoRelatorio gerarDespesasMes() {
     }
 }
 
-
-    
-    
-//    Só despesas do tipo "Combustível", filtradas por mês.
-
-private ResultadoRelatorio gerarDespesasCombustiveis () {
+// Método auxiliar para preparar dados de combustível por mês
+private ResultadoFormatado prepararRelatorioCombustivelMes(int mes) {
     try {
-        // Pega o mês escolhido
-        String selecionado = (String) cbVariavel.getSelectedItem();
-
-        if (selecionado == null || selecionado.equals("Selecione um mês")) {
-            JOptionPane.showMessageDialog(this, "Selecione um mês!");
-            return null;
-        }
-
-        int mes = Integer.parseInt(selecionado.substring(0, 2));
-
-        // Busca todas as movimentações do mês
-        ArrayList<Movimentacao> lista = relDao.despesasMes(mes);
-
-        if (lista == null || lista.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Não há despesas cadastradas nesse mês!");
-            return null;
-        }
-
-        // COLUNAS DO RELATÓRIO
-        String[] colunas = { "ID Veículo", "Veículo", "Tipo Despesa", "Data", "Valor" };
-        ArrayList<String[]> linhas = new ArrayList<>();
-
-        double total = 0;
-
-        // Filtra APENAS COMBUSTÍVEL
-        for (Movimentacao m : lista) {
-
-            Despesas d = despDAO.buscarPorId(m.getIdDespesa());
-
-            // Se não for Combustível, pula
-            if (d == null) {
-            continue;
-            }
-
-            String desc = d.getDescricao();
-            if (desc == null) {
-                continue;
-            }
-
-            // deixa tudo minúsculo e sem acento na comparação:
-            if (!desc.toLowerCase().contains("combust")) {
-                continue;
-}
-
-            Veiculos v = relDao.buscarVeiculoPorId(m.getIdVeiculo());
-            String modelo = (v != null) ? v.getModelo() : "Não encontrado";
-
-            total += m.getValor();
-
-            linhas.add(new String[]{
-                String.valueOf(m.getIdVeiculo()),
-                modelo,
-                d.getDescricao(),
-                m.getData(),
-                String.valueOf(m.getValor())
-            });
-        }
-
-        if (linhas.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Não há despesas de combustível nesse mês!");
-            return null;
-        }
-
-        return new ResultadoRelatorio(colunas, linhas, total);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório de combustível: " + e.getMessage());
-        return null;
-    }
-}
-
-private ResultadoRelatorio gerarIpvaAno() {
-    try {
-        String anoStr = JOptionPane.showInputDialog(this, "Informe o ano (ex: 2024):");
-        if (anoStr == null || anoStr.trim().isEmpty()) {
-            return null;
-        }
-
-        int ano = Integer.parseInt(anoStr.trim());
-
-            ArrayList<Movimentacao> lista = relDao.ipvaAno(ano);
-
-        if (lista == null || lista.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Não há IPVA cadastrado para esse ano!");
-            return null;
-        }
-
-        String[] colunas = { "ID Veículo", "Veículo", "Ano", "Valor" };
-        ArrayList<String[]> linhas = new ArrayList<>();
-        double total = 0;
-
-        for (Movimentacao m : lista) {
-            Veiculos v = relDao.buscarVeiculoPorId(m.getIdVeiculo());
-            String modelo = (v != null) ? v.getModelo() : "Não encontrado";
-
-            total += m.getValor();
-
-            linhas.add(new String[] {
-                String.valueOf(m.getIdVeiculo()),
-                modelo,
-                String.valueOf(ano),
-                String.valueOf(m.getValor())
-            });
-        }
-
-        return new ResultadoRelatorio(colunas, linhas, total);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório de IPVA: " + e.getMessage());
-        return null;
-    }
-}
-
-private ResultadoRelatorio gerarMultasVeiculoAno() {
-    try {
-        String selecionado = (String) cbVariavel.getSelectedItem();
-
-        if (selecionado == null || selecionado.equals("Selecione um veículo")) {
-            JOptionPane.showMessageDialog(this, "Selecione um veículo!");
-            return null;
-        }
-
-        int idVeiculo = Integer.parseInt(selecionado);
-
-        String anoStr = JOptionPane.showInputDialog(this, "Informe o ano (ex: 2024):");
-        if (anoStr == null || anoStr.trim().isEmpty()) {
-            return null;
-        }
-
-        int ano = Integer.parseInt(anoStr.trim());
-
-        ArrayList<Movimentacao> lista = relDao.multasVeiculoAno(idVeiculo, ano);
-
-        if (lista == null || lista.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Não há multas pagas para esse veículo nesse ano!");
+        ControleRelatorios.ResultadoRelatorioPeriodo resultado = 
+            controle.gerarRelatorioCombustivelMes(mes);
+        
+        if (resultado.movimentacoes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Não há despesas de combustível para este mês!");
             return null;
         }
 
         String[] colunas = { "ID Veículo", "Veículo", "Data", "Descrição", "Valor" };
         ArrayList<String[]> linhas = new ArrayList<>();
-        double total = 0;
 
-        Veiculos v = relDao.buscarVeiculoPorId(idVeiculo);
+        for (Movimentacao m : resultado.movimentacoes) {
+            // Veículo
+            Veiculos v = null;
+            try {
+                v = controle.buscarVeiculoPorId(m.getIdVeiculo());
+            } catch (Exception e) {
+                // Se não encontrar, continua
+            }
+            String modelo = (v != null) ? v.getModelo() : "Não encontrado";
+
+            linhas.add(new String[]{
+                String.valueOf(m.getIdVeiculo()),
+                modelo,
+                m.getData(),
+                m.getDescricao(),
+                String.valueOf(m.getValor())
+            });
+        }
+
+        return new ResultadoFormatado(colunas, linhas, resultado.total);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
+        return null;
+    }
+}
+
+// Método auxiliar para preparar dados de IPVA por ano
+private ResultadoFormatado prepararRelatorioIpvaAno(int ano) {
+    try {
+        ControleRelatorios.ResultadoRelatorioPeriodo resultado = 
+            controle.gerarRelatorioIpvaAno(ano);
+        
+        if (resultado.movimentacoes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Não há IPVA cadastrado para este ano!");
+            return null;
+        }
+
+        String[] colunas = { "ID Veículo", "Veículo", "Ano", "Data Pagamento", "Valor" };
+        ArrayList<String[]> linhas = new ArrayList<>();
+
+        for (Movimentacao m : resultado.movimentacoes) {
+            // Veículo
+            Veiculos v = null;
+            try {
+                v = controle.buscarVeiculoPorId(m.getIdVeiculo());
+            } catch (Exception e) {
+                // Se não encontrar, continua
+            }
+            String modelo = (v != null) ? v.getModelo() : "Não encontrado";
+
+            linhas.add(new String[]{
+                String.valueOf(m.getIdVeiculo()),
+                modelo,
+                String.valueOf(ano),
+                m.getData(),
+                String.valueOf(m.getValor())
+            });
+        }
+
+        return new ResultadoFormatado(colunas, linhas, resultado.total);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
+        return null;
+    }
+}
+
+// Método auxiliar para preparar dados de multas por veículo e ano
+private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int ano) {
+    try {
+        ControleRelatorios.ResultadoRelatorioVeiculoPeriodo resultado = 
+            controle.gerarRelatorioMultasVeiculoAno(idVeiculo, ano);
+        
+        if (resultado.movimentacoes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Não há multas pagas para este veículo neste ano!");
+            return null;
+        }
+
+        String[] colunas = { "ID Veículo", "Veículo", "Data", "Descrição", "Valor" };
+        ArrayList<String[]> linhas = new ArrayList<>();
+
+        // Buscar veículo uma vez
+        Veiculos v = null;
+        try {
+            v = controle.buscarVeiculoPorId(idVeiculo);
+        } catch (Exception e) {
+            // Se não encontrar, continua
+        }
         String modelo = (v != null) ? v.getModelo() : "Não encontrado";
 
-        for (Movimentacao m : lista) {
-            total += m.getValor();
-
-            linhas.add(new String[] {
+        for (Movimentacao m : resultado.movimentacoes) {
+            linhas.add(new String[]{
                 String.valueOf(idVeiculo),
                 modelo,
                 m.getData(),
@@ -441,99 +401,13 @@ private ResultadoRelatorio gerarMultasVeiculoAno() {
             });
         }
 
-        return new ResultadoRelatorio(colunas, linhas, total);
+        return new ResultadoFormatado(colunas, linhas, resultado.total);
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório de multas: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório: " + e.getMessage());
         return null;
     }
 }
-
-
-
-    
-   //NOVO METODO PDF
-private void gerarPdf(String caminhoArquivo,
-                      String tituloRelatorio,
-                      String[] colunas,
-                      ArrayList<String[]> linhas,
-                      Double totalOpcional) {
-    try {
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream(caminhoArquivo));
-        document.open();
-        
-        //BORDA VERMELHA DECORAR
-        
-        Rectangle rect = new Rectangle(document.getPageSize());
-        rect.setBorder(Rectangle.BOX);
-        rect.setBorderColor(BaseColor.RED);
-        rect.setBorderWidth(20);
-        document.add(rect);
-
-
-        // TÍTULO
-        Font tituloFont = new Font(Font.FontFamily.HELVETICA, 30, Font.BOLD);
-        Paragraph titulo = new Paragraph(tituloRelatorio, tituloFont);
-        titulo.setAlignment(Element.ALIGN_CENTER);
-        document.add(titulo);
-        document.add(new Paragraph(" "));
-
-        // TABELA
-        PdfPTable table = new PdfPTable(colunas.length);
-        table.setWidthPercentage(100);
-
-        Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
-        Font cellFont   = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
-
-        // Cabeçalho
-        for (String col : colunas) {
-            PdfPCell cell = new PdfPCell(new Paragraph(col, headerFont));
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(cell);
-        }
-
-        // Linhas
-        for (String[] linha : linhas) {
-            for (String valor : linha) {
-                table.addCell(new Paragraph(valor, cellFont));
-            }
-        }
-
-        document.add(table);
-
-        // Mostra TOTAL caso exista
-        if (totalOpcional != null) {
-            document.add(new Paragraph(" "));
-            Font totalFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-            document.add(new Paragraph("Total: R$ " + totalOpcional, totalFont));
-        }
-
-        document.close();
-
-        JOptionPane.showMessageDialog(this, "PDF gerado com sucesso!");
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao gerar PDF: " + e.getMessage());
-    }
-}
-
-    
-    
-        
-    
-    class ResultadoRelatorio {
-    String[] colunas;
-    ArrayList<String[]> linhas;
-    Double total; // pode ser null
-
-    public ResultadoRelatorio(String[] colunas, ArrayList<String[]> linhas, Double total) {
-        this.colunas = colunas;
-        this.linhas = linhas;
-        this.total = total;
-    }
-}
-
 
     
 
@@ -552,7 +426,7 @@ private void gerarPdf(String caminhoArquivo,
         jLabel1 = new javax.swing.JLabel();
         cbTipoRelatorio = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonGerarRelatorio = new javax.swing.JButton();
         cbVariavel = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -574,11 +448,11 @@ private void gerarPdf(String caminhoArquivo,
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("TIPO");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setText("GERAR RELATÓRIO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonGerarRelatorio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonGerarRelatorio.setText("GERAR RELATÓRIO");
+        jButtonGerarRelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonGerarRelatorioActionPerformed(evt);
             }
         });
 
@@ -614,7 +488,7 @@ private void gerarPdf(String caminhoArquivo,
                         .addComponent(cbVariavel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(302, 302, 302)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonGerarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -629,7 +503,7 @@ private void gerarPdf(String caminhoArquivo,
                 .addGap(28, 28, 28)
                 .addComponent(cbVariavel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonGerarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                 .addComponent(jButtonVoltar)
                 .addGap(26, 26, 26))
@@ -647,115 +521,113 @@ private void gerarPdf(String caminhoArquivo,
 
     }//GEN-LAST:event_jButtonVoltarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        // Criar pasta base (genérica para qualquer usuário)
-    String pastaRelatorios = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Relatorios_Veiculos";
-    new File(pastaRelatorios).mkdirs(); // cria se não existir
+    private void jButtonGerarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGerarRelatorioActionPerformed
+        String pastaRelatorios = System.getProperty("user.home") + File.separator + 
+                            "Documents" + File.separator + "Relatorios_Veiculos";
+    new File(pastaRelatorios).mkdirs();
 
-    //BOTÃO GERAR RELATÓRIO
     String tipo = (String) cbTipoRelatorio.getSelectedItem();
+    ResultadoFormatado resultado = null;
+    String nomeArquivo = "";
+    String tituloRelatorio = "";
 
-    if ("Veículos inativos".equals(tipo)) {
-
-        ResultadoRelatorio res = gerarRelatoriosInativos();
-
-        if (res == null) return;
-
-        String caminho = pastaRelatorios + File.separator + "veiculos_inativos.pdf";
-        gerarPdf(
-            caminho,
-            "Veículos Inativos",
-            res.colunas,
-            res.linhas,
-            null // não tem total
-        );
+    try {
+        // 1. VEÍCULOS INATIVOS
+        if ("Veículos inativos".equals(tipo)) {
+            resultado = prepararRelatorioInativos();
+            nomeArquivo = "veiculos_inativos.pdf";
+            tituloRelatorio = "Veículos Inativos";
+            
+        // 2. DESPESAS DE UM VEÍCULO
+        } else if ("Despesas de um veículo".equals(tipo)) {
+            String selecionado = (String) cbVariavel.getSelectedItem();
+            if (selecionado == null || selecionado.equals("Selecione um veículo")) {
+                JOptionPane.showMessageDialog(this, "Selecione um veículo!");
+                return;
+            }
+            int idVeiculo = Integer.parseInt(selecionado);
+            resultado = prepararRelatorioDespesasVeiculo(idVeiculo);
+            nomeArquivo = "despesas_veiculo_" + idVeiculo + ".pdf";
+            tituloRelatorio = "Despesas do Veículo (ID: " + idVeiculo + ")";
+            
+        // 3. TOTAL GERAL DE DESPESAS DA FROTA NO MÊS
+        } else if ("Total geral de despesas da frota no mês".equals(tipo)) {
+            String selecionado = (String) cbVariavel.getSelectedItem();
+            if (selecionado == null || selecionado.equals("Selecione um mês")) {
+                JOptionPane.showMessageDialog(this, "Selecione um mês!");
+                return;
+            }
+            int mes = Integer.parseInt(selecionado.substring(0, 2));
+            resultado = prepararRelatorioDespesasMes(mes);
+            nomeArquivo = "despesas_frota_mes_" + String.format("%02d", mes) + ".pdf";
+            tituloRelatorio = "Despesas da Frota - " + selecionado.substring(4);
+            
+        // 4. TOTAL DE GASTOS COM COMBUSTÍVEL NO MÊS
+        } else if ("Total de gastos com combustível no mês".equals(tipo)) {
+            String selecionado = (String) cbVariavel.getSelectedItem();
+            if (selecionado == null || selecionado.equals("Selecione um mês")) {
+                JOptionPane.showMessageDialog(this, "Selecione um mês!");
+                return;
+            }
+            int mes = Integer.parseInt(selecionado.substring(0, 2));
+            resultado = prepararRelatorioCombustivelMes(mes);
+            nomeArquivo = "combustivel_mes_" + String.format("%02d", mes) + ".pdf";
+            tituloRelatorio = "Gastos com Combustível - " + selecionado.substring(4);
+            
+        // 5. TOTAL DE IPVA DA FROTA NO ANO
+        } else if ("Total de IPVA da frota no ano".equals(tipo)) {
+            String anoStr = JOptionPane.showInputDialog(this, "Informe o ano (ex: 2024):");
+            if (anoStr == null || anoStr.trim().isEmpty()) {
+                return;
+            }
+            int ano = Integer.parseInt(anoStr.trim());
+            resultado = prepararRelatorioIpvaAno(ano);
+            nomeArquivo = "ipva_ano_" + ano + ".pdf";
+            tituloRelatorio = "IPVA da Frota - Ano " + ano;
+            
+        // 6. MULTAS PAGAS POR VEÍCULO NO ANO
+        } else if ("Multas pagas por veículo no ano".equals(tipo)) {
+            String selecionado = (String) cbVariavel.getSelectedItem();
+            if (selecionado == null || selecionado.equals("Selecione um veículo")) {
+                JOptionPane.showMessageDialog(this, "Selecione um veículo!");
+                return;
+            }
+            int idVeiculo = Integer.parseInt(selecionado);
+            
+            String anoStr = JOptionPane.showInputDialog(this, "Informe o ano (ex: 2024):");
+            if (anoStr == null || anoStr.trim().isEmpty()) {
+                return;
+            }
+            int ano = Integer.parseInt(anoStr.trim());
+            
+            resultado = prepararRelatorioMultasVeiculoAno(idVeiculo, ano);
+            nomeArquivo = "multas_veiculo_" + idVeiculo + "_ano_" + ano + ".pdf";
+            tituloRelatorio = "Multas do Veículo (ID: " + idVeiculo + ") - Ano " + ano;
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Tipo de relatório não implementado!");
+            return;
+        }
+        
+        // Gerar PDF se houver resultado
+        if (resultado != null) {
+            String caminho = pastaRelatorios + File.separator + nomeArquivo;
+            gerarPdf(caminho, tituloRelatorio, 
+                    resultado.colunas, resultado.linhas, resultado.total);
+        } else {
+            // resultado será null se o prepararRelatorioXXX() retornar null
+            // (já exibiu mensagem de erro dentro do método)
+        }
+        
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, 
+            "Erro de formato numérico: " + e.getMessage());
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Erro ao processar relatório: " + e.getMessage());
+        e.printStackTrace();
     }
-
-    if ("Despesas de um veículo".equals(tipo)) {
-
-        ResultadoRelatorio res = gerarRelatorioDespesasVeiculo();
-
-        if (res == null) return;
-
-        String caminho = pastaRelatorios + File.separator + "despesas_veiculo.pdf";
-        gerarPdf(
-            caminho,
-            "Despesas do Veículo",
-            res.colunas,
-            res.linhas,
-            res.total
-        );
-    }
-
-    if ("Total geral de despesas da frota no mês".equals(tipo)) {
-
-        ResultadoRelatorio res = gerarDespesasMes();
-
-        if (res == null) return;
-
-        String caminho = pastaRelatorios + File.separator + "despesas_mes.pdf";
-        gerarPdf(
-            caminho,
-            "Despesas da Frota no Mês",
-            res.colunas,
-            res.linhas,
-            res.total
-        );
-    }
-
-    if ("Total de gastos com combustível no mês".equals(tipo)) {
-
-        ResultadoRelatorio res = gerarDespesasCombustiveis();
-
-        if (res == null) return;
-
-        String caminho = pastaRelatorios + File.separator + "combustivel_mes.pdf";
-        gerarPdf(
-            caminho,
-            "Gastos com Combustível no Mês",
-            res.colunas,
-            res.linhas,
-            res.total
-        );
-    }
-    
-    if ("Total de IPVA da frota no ano".equals(tipo)) {
-
-    ResultadoRelatorio res = gerarIpvaAno();
-
-    if (res == null) return;
-
-    String caminho = pastaRelatorios + File.separator + "ipva_ano.pdf";
-    gerarPdf(
-        caminho,
-        "Total de IPVA da Frota no Ano",
-        res.colunas,
-        res.linhas,
-        res.total
-    );
-}
-    
-    if ("Multas pagas por veículo no ano".equals(tipo)) {
-
-    ResultadoRelatorio res = gerarMultasVeiculoAno();
-
-    if (res == null) return;
-
-    String caminho = pastaRelatorios + File.separator + "multas_veiculo_ano.pdf";
-    gerarPdf(
-        caminho,
-        "Multas Pagas por Veículo no Ano",
-        res.colunas,
-        res.linhas,
-        res.total
-    );
-}
-
-
-
-
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonGerarRelatorioActionPerformed
 
     private void cbVariavelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbVariavelActionPerformed
         // TODO add your handling code here:
@@ -769,7 +641,7 @@ private void gerarPdf(String caminhoArquivo,
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbTipoRelatorio;
     private javax.swing.JComboBox<String> cbVariavel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonGerarRelatorio;
     private javax.swing.JButton jButtonVoltar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
