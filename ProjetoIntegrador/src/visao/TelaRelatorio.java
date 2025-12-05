@@ -40,7 +40,7 @@ import java.io.File;
  * @author eugeniojulio
  */
 public class TelaRelatorio extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Relatorio
      * 
@@ -63,23 +63,19 @@ private void atualizarColunas() {
     cbVariavel.setVisible(false);
     cbVariavel.setEnabled(false);
 
-    // Veículos inativos não precisa de ComboBox
     if ("Veículos inativos".equals(tipo)) {
-        return; 
+        return;
     }
 
-    // Despesas de um veículo
-    if ("Despesas de um veículo".equals(tipo)) {
+    if ("Despesas de um veículo".equals(tipo) 
+        || "Multas pagas por veículo no ano".equals(tipo)) {
 
-        //MOSTRAR CAIXA PARA SELECIONAR O VEICULO
         cbVariavel.setVisible(true);
         cbVariavel.setEnabled(true);
 
-        //LIMPAR ITENS ANTIGOS E PLACEHOLDER
         cbVariavel.removeAllItems();
         cbVariavel.addItem("Selecione um veículo");
 
-        //PEGAR OS IDS DO RELATORIOSDAO
         ArrayList<Veiculos> lista = relDao.listarVeiculos();
 
         for (Veiculos v : lista) {
@@ -92,12 +88,9 @@ private void atualizarColunas() {
     // Meses usados pelos relatórios por mês
     if ("Total geral de despesas da frota no mês".equals(tipo)
             || "Total de gastos com combustível no mês".equals(tipo)) {
-
-        //MOSTRAR CAIXA PARA SELECIONAR MÊS
         cbVariavel.setVisible(true);
         cbVariavel.setEnabled(true);
 
-        //LIMPAR ITENS ANTIGOS E PLACEHOLDER
         cbVariavel.removeAllItems();
         cbVariavel.addItem("Selecione um mês");
         cbVariavel.addItem("01 - Janeiro");
@@ -124,7 +117,7 @@ private void atualizarColunas() {
         
         //QUANDO SELECIONA NA COMBOBOX A TABELA MUDA ?
         cbTipoRelatorio.addActionListener(e -> atualizarColunas());
-        
+        atualizarColunas();
         
         this.setLocationRelativeTo(null);
 
@@ -591,6 +584,11 @@ private void gerarPdf(String caminhoArquivo,
 
         cbVariavel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbVariavel.setEnabled(false);
+        cbVariavel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbVariavelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -755,8 +753,13 @@ private void gerarPdf(String caminhoArquivo,
 }
 
 
-   
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cbVariavelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbVariavelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbVariavelActionPerformed
 
     /**
      * @param args the command line arguments
