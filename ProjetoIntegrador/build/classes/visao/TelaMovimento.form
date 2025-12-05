@@ -192,14 +192,6 @@
                           </Group>
                           <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-<<<<<<< HEAD
-                              <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jTextFieldIdMovimento" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-=======
->>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Component id="jButtonLimpar" min="-2" max="-2" attributes="0"/>
@@ -303,11 +295,8 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButtonAlterar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonRegistrar" alignment="3" min="-2" max="-2" attributes="0"/>
-<<<<<<< HEAD
-=======
                           <Component id="jButtonBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonLimpar" alignment="3" min="-2" max="-2" attributes="0"/>
->>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>

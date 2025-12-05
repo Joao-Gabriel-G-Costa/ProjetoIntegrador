@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package visao;
-import com.itextpdf.text.BaseColor;
 import persistencia.DespesasDAO;
 import persistencia.RelatoriosDAO;
 import java.util.ArrayList;
@@ -14,22 +13,23 @@ import modelos.classes.Despesas;
 import persistencia.VeiculosDAO;
 
 //IMPORTS PDF
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 import java.io.FileOutputStream;
 import java.io.File;
 
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.BaseColor;
 
 //IMPORTS PDF
 
@@ -321,9 +321,19 @@ private ResultadoRelatorio gerarDespesasCombustiveis () {
             Despesas d = despDAO.buscarPorId(m.getIdDespesa());
 
             // Se não for Combustível, pula
-            if (d == null || !d.getDescricao().equals("Combustivel")) {
+            if (d == null) {
+            continue;
+            }
+
+            String desc = d.getDescricao();
+            if (desc == null) {
                 continue;
             }
+
+            // deixa tudo minúsculo e sem acento na comparação:
+            if (!desc.toLowerCase().contains("combust")) {
+                continue;
+}
 
             Veiculos v = relDao.buscarVeiculoPorId(m.getIdVeiculo());
             String modelo = (v != null) ? v.getModelo() : "Não encontrado";
@@ -351,6 +361,101 @@ private ResultadoRelatorio gerarDespesasCombustiveis () {
         return null;
     }
 }
+
+private ResultadoRelatorio gerarIpvaAno() {
+    try {
+        String anoStr = JOptionPane.showInputDialog(this, "Informe o ano (ex: 2024):");
+        if (anoStr == null || anoStr.trim().isEmpty()) {
+            return null;
+        }
+
+        int ano = Integer.parseInt(anoStr.trim());
+
+            ArrayList<Movimentacao> lista = relDao.ipvaAno(ano);
+
+        if (lista == null || lista.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Não há IPVA cadastrado para esse ano!");
+            return null;
+        }
+
+        String[] colunas = { "ID Veículo", "Veículo", "Ano", "Valor" };
+        ArrayList<String[]> linhas = new ArrayList<>();
+        double total = 0;
+
+        for (Movimentacao m : lista) {
+            Veiculos v = relDao.buscarVeiculoPorId(m.getIdVeiculo());
+            String modelo = (v != null) ? v.getModelo() : "Não encontrado";
+
+            total += m.getValor();
+
+            linhas.add(new String[] {
+                String.valueOf(m.getIdVeiculo()),
+                modelo,
+                String.valueOf(ano),
+                String.valueOf(m.getValor())
+            });
+        }
+
+        return new ResultadoRelatorio(colunas, linhas, total);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório de IPVA: " + e.getMessage());
+        return null;
+    }
+}
+
+private ResultadoRelatorio gerarMultasVeiculoAno() {
+    try {
+        String selecionado = (String) cbVariavel.getSelectedItem();
+
+        if (selecionado == null || selecionado.equals("Selecione um veículo")) {
+            JOptionPane.showMessageDialog(this, "Selecione um veículo!");
+            return null;
+        }
+
+        int idVeiculo = Integer.parseInt(selecionado);
+
+        String anoStr = JOptionPane.showInputDialog(this, "Informe o ano (ex: 2024):");
+        if (anoStr == null || anoStr.trim().isEmpty()) {
+            return null;
+        }
+
+        int ano = Integer.parseInt(anoStr.trim());
+
+        ArrayList<Movimentacao> lista = relDao.multasVeiculoAno(idVeiculo, ano);
+
+        if (lista == null || lista.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Não há multas pagas para esse veículo nesse ano!");
+            return null;
+        }
+
+        String[] colunas = { "ID Veículo", "Veículo", "Data", "Descrição", "Valor" };
+        ArrayList<String[]> linhas = new ArrayList<>();
+        double total = 0;
+
+        Veiculos v = relDao.buscarVeiculoPorId(idVeiculo);
+        String modelo = (v != null) ? v.getModelo() : "Não encontrado";
+
+        for (Movimentacao m : lista) {
+            total += m.getValor();
+
+            linhas.add(new String[] {
+                String.valueOf(idVeiculo),
+                modelo,
+                m.getData(),
+                m.getDescricao(),
+                String.valueOf(m.getValor())
+            });
+        }
+
+        return new ResultadoRelatorio(colunas, linhas, total);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao gerar relatório de multas: " + e.getMessage());
+        return null;
+    }
+}
+
 
 
     
@@ -546,8 +651,11 @@ private void gerarPdf(String caminhoArquivo,
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-                 //BOTÃO GERAR RELATORIO
-                                         
+        // Criar pasta base (genérica para qualquer usuário)
+    String pastaRelatorios = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Relatorios_Veiculos";
+    new File(pastaRelatorios).mkdirs(); // cria se não existir
+
+    //BOTÃO GERAR RELATÓRIO
     String tipo = (String) cbTipoRelatorio.getSelectedItem();
 
     if ("Veículos inativos".equals(tipo)) {
@@ -556,8 +664,9 @@ private void gerarPdf(String caminhoArquivo,
 
         if (res == null) return;
 
+        String caminho = pastaRelatorios + File.separator + "veiculos_inativos.pdf";
         gerarPdf(
-            "C:\\Users\\heloi\\Pictures\\RELATORIOS VEICULOS\\veiculos_inativos.pdf",
+            caminho,
             "Veículos Inativos",
             res.colunas,
             res.linhas,
@@ -571,8 +680,9 @@ private void gerarPdf(String caminhoArquivo,
 
         if (res == null) return;
 
+        String caminho = pastaRelatorios + File.separator + "despesas_veiculo.pdf";
         gerarPdf(
-            "C:\\Users\\heloi\\Pictures\\RELATORIOS VEICULOS\\despesas_veiculo.pdf",
+            caminho,
             "Despesas do Veículo",
             res.colunas,
             res.linhas,
@@ -586,8 +696,9 @@ private void gerarPdf(String caminhoArquivo,
 
         if (res == null) return;
 
+        String caminho = pastaRelatorios + File.separator + "despesas_mes.pdf";
         gerarPdf(
-            "C:\\Users\\heloi\\Pictures\\RELATORIOS VEICULOS\\despesas_mes.pdf",
+            caminho,
             "Despesas da Frota no Mês",
             res.colunas,
             res.linhas,
@@ -597,21 +708,52 @@ private void gerarPdf(String caminhoArquivo,
 
     if ("Total de gastos com combustível no mês".equals(tipo)) {
 
-        ResultadoRelatorio res = gerarDespesasCombustiveis(); // A GENTE AINDA VAI CRIAR ESSE MÉTODO
+        ResultadoRelatorio res = gerarDespesasCombustiveis();
 
         if (res == null) return;
 
+        String caminho = pastaRelatorios + File.separator + "combustivel_mes.pdf";
         gerarPdf(
-            "C:\\Users\\heloi\\Pictures\\RELATORIOS VEICULOS\\combustivel_mes.pdf",
+            caminho,
             "Gastos com Combustível no Mês",
             res.colunas,
             res.linhas,
             res.total
         );
     }
-
-
     
+    if ("Total de IPVA da frota no ano".equals(tipo)) {
+
+    ResultadoRelatorio res = gerarIpvaAno();
+
+    if (res == null) return;
+
+    String caminho = pastaRelatorios + File.separator + "ipva_ano.pdf";
+    gerarPdf(
+        caminho,
+        "Total de IPVA da Frota no Ano",
+        res.colunas,
+        res.linhas,
+        res.total
+    );
+}
+    
+    if ("Multas pagas por veículo no ano".equals(tipo)) {
+
+    ResultadoRelatorio res = gerarMultasVeiculoAno();
+
+    if (res == null) return;
+
+    String caminho = pastaRelatorios + File.separator + "multas_veiculo_ano.pdf";
+    gerarPdf(
+        caminho,
+        "Multas Pagas por Veículo no Ano",
+        res.colunas,
+        res.linhas,
+        res.total
+    );
+}
+
 
    
     }//GEN-LAST:event_jButton1ActionPerformed

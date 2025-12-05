@@ -25,7 +25,7 @@ public class TelaMovimento extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         exibirMovimentacoes();
-        jButtonLimpar.setEnabled(false);
+        //jButtonLimpar.setEnabled(false);
         jTextFieldIdVeiculo.setEnabled(false);
         jTextFieldIdTipoDespesa.setEnabled(false);
         
@@ -343,13 +343,6 @@ public class TelaMovimento extends javax.swing.JFrame {
                                 .addComponent(jButtonSelecionarIDVeiculo)))
                         .addGap(40, 40, 40)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-<<<<<<< HEAD
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTextFieldIdMovimento, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-=======
->>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButtonLimpar)
@@ -429,13 +422,9 @@ public class TelaMovimento extends javax.swing.JFrame {
                     .addComponent(jButtonDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButtonAlterar)
-<<<<<<< HEAD
-                        .addComponent(jButtonRegistrar)))
-=======
                         .addComponent(jButtonRegistrar)
                         .addComponent(jButtonBuscar)
                         .addComponent(jButtonLimpar)))
->>>>>>> f61f0eaca6e7e1233836a6aa6417843dbcbe4730
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(23, Short.MAX_VALUE))

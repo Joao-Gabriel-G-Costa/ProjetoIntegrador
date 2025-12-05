@@ -24,7 +24,7 @@ public class TelaDespesas extends javax.swing.JFrame {
      */
     public TelaDespesas() {
         initComponents();
-        jButtonLimpar.setEnabled(false);
+        //jButtonLimpar.setEnabled(false);
         this.setLocationRelativeTo(null);
         exibirDespesasNaTabela();
         

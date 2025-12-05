@@ -197,7 +197,47 @@ public class RelatoriosDAO {
          }
      
      
-     
+     public ArrayList<Movimentacao> ipvaAno(int ano) {
+    try {
+        ArrayList<Movimentacao> todasAno = despesasAno(ano);
+        ArrayList<Movimentacao> ipvas = new ArrayList<>();
+
+        for (Movimentacao m : todasAno) {
+            Despesas d = despDAO.buscarPorId(m.getIdDespesa());
+            if (d != null && "IPVA".equalsIgnoreCase(d.getDescricao())) {
+                ipvas.add(m);
+            }
+        }
+
+        return ipvas;
+    } catch (Exception e) {
+        return new ArrayList<>();
+    }
+}
+
+     public ArrayList<Movimentacao> multasVeiculoAno(int idVeiculo, int ano) {
+    try {
+        ArrayList<Movimentacao> todasAno = despesasAno(ano);
+        ArrayList<Movimentacao> multas = new ArrayList<>();
+
+        for (Movimentacao m : todasAno) {
+
+            if (m.getIdVeiculo() != idVeiculo) {
+                continue;
+            }
+
+            Despesas d = despDAO.buscarPorId(m.getIdDespesa());
+            if (d != null && "Multa".equalsIgnoreCase(d.getDescricao())) {
+                multas.add(m);
+            }
+        }
+
+        return multas;
+    } catch (Exception e) {
+        return new ArrayList<>();
+    }
+}
+
      
 
        
