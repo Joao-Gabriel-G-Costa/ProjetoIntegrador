@@ -5,12 +5,17 @@
  */
 package visao;
 
-//import Persistencia.VeiculosDAO; // -> não está sendo usado
+
 import controle.ControleVeiculos;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.classes.Veiculos;
+
+//IMPORTAR DATA ATUAL(ano)
+
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 
 /**
  *
@@ -27,6 +32,12 @@ public class TelaVeiculos extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         exibirVeiculos();
+        
+        //JÁ DEIXAR ESCRITO NO ANO 
+        //CONVERSÃO DATA (ano)
+        LocalDate hoje = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        jTextFieldAnoFabricacao.setText(hoje.format(formatter));
         
         jButtonAlterar.setEnabled(false);
         jButtonDeletar.setEnabled(false);
@@ -176,6 +187,11 @@ public class TelaVeiculos extends javax.swing.JFrame {
 
         jTextFieldAnoFabricacao.setBackground(new java.awt.Color(204, 204, 204));
         jTextFieldAnoFabricacao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jTextFieldAnoFabricacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldAnoFabricacaoActionPerformed(evt);
+            }
+        });
 
         jTextFieldIDVeiculo.setBackground(new java.awt.Color(204, 204, 204));
         jTextFieldIDVeiculo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -530,6 +546,11 @@ public class TelaVeiculos extends javax.swing.JFrame {
         
         exibirVeiculos();
     }//GEN-LAST:event_jButtonLimparActionPerformed
+
+    private void jTextFieldAnoFabricacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldAnoFabricacaoActionPerformed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jTextFieldAnoFabricacaoActionPerformed
 
     private void exibirVeiculos() {
      try {

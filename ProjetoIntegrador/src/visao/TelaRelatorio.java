@@ -44,6 +44,8 @@ public class TelaRelatorio extends javax.swing.JFrame {
 
         cbVariavel.setVisible(false);
         cbVariavel.setEnabled(false);
+        
+        
 
         if ("Veículos inativos".equals(tipo)) {
             return;
@@ -57,14 +59,20 @@ public class TelaRelatorio extends javax.swing.JFrame {
 
             cbVariavel.removeAllItems();
             cbVariavel.addItem("Selecione um veículo");
+            
+            
 
             try {
+                
                 ArrayList<Veiculos> lista = controle.listarVeiculosParaCombo();
                 for (Veiculos v : lista) {
                     cbVariavel.addItem(String.valueOf(v.getIdVeiculo()));
                 }
+                
+                
+                
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,     
                     "Erro ao carregar veículos: " + e.getMessage());
             }
 
@@ -107,34 +115,36 @@ public class TelaRelatorio extends javax.swing.JFrame {
             PdfWriter.getInstance(document, new FileOutputStream(caminhoArquivo));
             document.open();
             
+            
+            //BORDA
             Rectangle rect = new Rectangle(document.getPageSize());
             rect.setBorder(Rectangle.BOX);
             rect.setBorderColor(BaseColor.RED);
             rect.setBorderWidth(20);
             document.add(rect);
 
-            // TÍTULO
+            //TÍTULO
             Font tituloFont = new Font(Font.FontFamily.HELVETICA, 30, Font.BOLD);
             Paragraph titulo = new Paragraph(tituloRelatorio, tituloFont);
             titulo.setAlignment(Element.ALIGN_CENTER);
             document.add(titulo);
             document.add(new Paragraph(" "));
 
-            // TABELA
+            //TABELA
             PdfPTable table = new PdfPTable(colunas.length);
             table.setWidthPercentage(100);
 
             Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
             Font cellFont   = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
 
-            // Cabeçalho
+            //Cabeçalho
             for (String col : colunas) {
                 PdfPCell cell = new PdfPCell(new Paragraph(col, headerFont));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
             }
 
-            // Linhas
+            //Linhas
             for (String[] linha : linhas) {
                 for (String valor : linha) {
                     table.addCell(new Paragraph(valor, cellFont));
@@ -143,7 +153,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
 
             document.add(table);
 
-            // Mostra TOTAL caso exista
+            //Mostra TOTAL caso exista
             if (totalOpcional != null) {
                 document.add(new Paragraph(" "));
                 Font totalFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
@@ -158,7 +168,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
         }
     }
     
-    // Método auxiliar para preparar dados de veículos inativos
+    //VEICULOS INATIVOS
     private ResultadoFormatado prepararRelatorioInativos() {
         try {
             ArrayList<Veiculos> lista = controle.gerarRelatorioInativos();
@@ -190,11 +200,13 @@ public class TelaRelatorio extends javax.swing.JFrame {
         }
     }
     
-    // Método auxiliar para preparar dados de despesas por veículo
+    //DESPESAS POR VEICULO
     private ResultadoFormatado prepararRelatorioDespesasVeiculo(int idVeiculo) {
         try {
             ControleRelatorios.ResultadoRelatorioVeiculo resultado = 
                 controle.gerarRelatorioDespesasVeiculo(idVeiculo);
+            
+            
             
             if (resultado.movimentacoes.isEmpty()) {
                 JOptionPane.showMessageDialog(this, 
@@ -225,7 +237,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
         }
     }
     
-    // Classe auxiliar para resultados formatados
+    //CLASSE AUXILIAR PARA OS RESULTADOS FORMATADOS
     class ResultadoFormatado {
         String[] colunas;
         ArrayList<String[]> linhas;
@@ -238,7 +250,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
         }
     }
     
-    // Método auxiliar para preparar dados de despesas por mês
+    //DESPESAS POR MES
 private ResultadoFormatado prepararRelatorioDespesasMes(int mes) {
     try {
         ControleRelatorios.ResultadoRelatorioPeriodo resultado = 
@@ -284,7 +296,7 @@ private ResultadoFormatado prepararRelatorioDespesasMes(int mes) {
     }
 }
 
-// Método auxiliar para preparar dados de combustível por mês
+//COMBUSTIVEL POR MES
 private ResultadoFormatado prepararRelatorioCombustivelMes(int mes) {
     try {
         ControleRelatorios.ResultadoRelatorioPeriodo resultado = 
@@ -326,7 +338,7 @@ private ResultadoFormatado prepararRelatorioCombustivelMes(int mes) {
     }
 }
 
-// Método auxiliar para preparar dados de IPVA por ano
+//IPVA POR ANO
 private ResultadoFormatado prepararRelatorioIpvaAno(int ano) {
     try {
         ControleRelatorios.ResultadoRelatorioPeriodo resultado = 
@@ -368,7 +380,7 @@ private ResultadoFormatado prepararRelatorioIpvaAno(int ano) {
     }
 }
 
-// Método auxiliar para preparar dados de multas por veículo e ano
+//MULTAS POR VEICULO E ANO
 private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int ano) {
     try {
         ControleRelatorios.ResultadoRelatorioVeiculoPeriodo resultado = 
@@ -625,13 +637,13 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
     String tituloRelatorio = "";
 
     try {
-        // 1. VEÍCULOS INATIVOS
+        //1 VEÍCULOS INATIVOS
         if ("Veículos inativos".equals(tipo)) {
             resultado = prepararRelatorioInativos();
             nomeArquivo = "veiculos_inativos.pdf";
             tituloRelatorio = "Veículos Inativos";
             
-        // 2. DESPESAS DE UM VEÍCULO
+        //2 DESPESAS DE UM VEÍCULO
         } else if ("Despesas de um veículo".equals(tipo)) {
             String selecionado = (String) cbVariavel.getSelectedItem();
             if (selecionado == null || selecionado.equals("Selecione um veículo")) {
@@ -643,7 +655,7 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
             nomeArquivo = "despesas_veiculo_" + idVeiculo + ".pdf";
             tituloRelatorio = "Despesas do Veículo (ID: " + idVeiculo + ")";
             
-        // 3. TOTAL GERAL DE DESPESAS DA FROTA NO MÊS
+        //3 TOTAL GERAL DE DESPESAS DA FROTA NO MÊS
         } else if ("Total geral de despesas da frota no mês".equals(tipo)) {
             String selecionado = (String) cbVariavel.getSelectedItem();
             if (selecionado == null || selecionado.equals("Selecione um mês")) {
@@ -655,7 +667,7 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
             nomeArquivo = "despesas_frota_mes_" + String.format("%02d", mes) + ".pdf";
             tituloRelatorio = "Despesas da Frota - " + selecionado.substring(4);
             
-        // 4. TOTAL DE GASTOS COM COMBUSTÍVEL NO MÊS
+        //4 TOTAL DE GASTOS COM COMBUSTÍVEL NO MÊS
         } else if ("Total de gastos com combustível no mês".equals(tipo)) {
             String selecionado = (String) cbVariavel.getSelectedItem();
             if (selecionado == null || selecionado.equals("Selecione um mês")) {
@@ -667,7 +679,7 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
             nomeArquivo = "combustivel_mes_" + String.format("%02d", mes) + ".pdf";
             tituloRelatorio = "Gastos com Combustível - " + selecionado.substring(4);
             
-        // 5. TOTAL DE IPVA DA FROTA NO ANO
+        //5 TOTAL DE IPVA DA FROTA NO ANO
         } else if ("Total de IPVA da frota no ano".equals(tipo)) {
             String anoStr = JOptionPane.showInputDialog(this, "Informe o ano (ex: 2024):");
             if (anoStr == null || anoStr.trim().isEmpty()) {
@@ -678,7 +690,7 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
             nomeArquivo = "ipva_ano_" + ano + ".pdf";
             tituloRelatorio = "IPVA da Frota - Ano " + ano;
             
-        // 6. MULTAS PAGAS POR VEÍCULO NO ANO
+        //6 MULTAS PAGAS POR VEÍCULO NO ANO
         } else if ("Multas pagas por veículo no ano".equals(tipo)) {
             String selecionado = (String) cbVariavel.getSelectedItem();
             if (selecionado == null || selecionado.equals("Selecione um veículo")) {
@@ -708,8 +720,7 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
             gerarPdf(caminho, tituloRelatorio, 
                     resultado.colunas, resultado.linhas, resultado.total);
         } else {
-            // resultado será null se o prepararRelatorioXXX() retornar null
-            // (já exibiu mensagem de erro dentro do método)
+            
         }
         
     } catch (NumberFormatException e) {
