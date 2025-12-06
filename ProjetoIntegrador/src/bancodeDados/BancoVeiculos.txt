@@ -1,1 +1,10 @@
 3;8272B;RENAULT;KWID;2010;false
+1;ZXC4K55;Mercedes-Benz;Sprinter;2019;true
+2;PQR8J90;Nissan;Versa;2020;true
+4;TUV6H12;Hyundai;HB20;2022;false
+5;QRS3T98;Fiat;Argo;2021;false
+1;ABC1D23;Toyota;Corolla;2020;true
+2;XYZ9K88;Honda;Civic;2019;true
+3;JKL4M56;Chevrolet;Onix;2022;true
+4;MNO7P12;Volkswagen;Gol;2018;false
+5;QRS3T98;Fiat;Argo;2021;false
