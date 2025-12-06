@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaMovimento.java</file>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleMovimentacao.java</file>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/bancodeDados/BancoMovimento.txt</file>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/MovimentacaoDAO.java</file>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/RelatoriosDAO.java</file>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaRelatorio.java</file>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/bancodeDados/BancoVeiculos.txt</file>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/VeiculosDAO.java</file>
+        </group>
     </open-files>
 </project-private>

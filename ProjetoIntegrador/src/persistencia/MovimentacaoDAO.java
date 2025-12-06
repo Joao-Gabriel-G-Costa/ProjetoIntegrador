@@ -132,6 +132,8 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
                 } else {
                     bw.write(
                         obj.getIdMovimentacao()+ ";" +
+                        obj.getIdVeiculo() + ";" +
+                        obj.getIdDespesa() + ";" +
                         obj.getDescricao() + ";" +
                         obj.getData()+ ";" +
                         obj.getValor()+ ";" + "\n"

@@ -1,7 +1,1 @@
 3;8272B;RENAULT;KWID;2010;false
-22;ASDAS;asdasd;dasd;1123123;false
-60;4566456;volks;c-891;2017;true
-32;ASDA1231212;abc;asdasd;123;true
-85;SLISJ;ajhbsd;akjsdn;2020;true
-9;LOKDJSA;akda;akdjna;2020;true
-7;45;4;4;2023;true
