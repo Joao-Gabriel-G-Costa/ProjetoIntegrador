@@ -9,7 +9,10 @@ import controle.ControleMovimentacao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+//IMPORTAR DATA ATUAL
 import java.time.LocalDate;
+
 
 
 
@@ -23,6 +26,13 @@ public class TelaMovimento extends javax.swing.JFrame {
     public TelaMovimento() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        //CONVERSÃO DATA
+        LocalDate hoje = LocalDate.now();
+        //LocalDate.now()
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        jTextFieldData.setText(hoje.format(formatter));
+
         
         exibirMovimentacoes();
         jTextFieldIdVeiculo.setEnabled(false);
@@ -612,10 +622,12 @@ public class TelaMovimento extends javax.swing.JFrame {
 
     private void jTextFieldDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDataActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTextFieldDataActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         // TODO add your handling code here:
+        
             try {
                 if (jTextFieldIdMovimento.getText().trim().isEmpty()) {
                     throw new Exception("Informe um ID de movimentação para buscar.");
@@ -655,7 +667,11 @@ public class TelaMovimento extends javax.swing.JFrame {
         jTextFieldIdVeiculo.setText("");
         jTextFieldIdTipoDespesa.setText("");
         jTextFieldDescricao.setText("");
-        jTextFieldData.setText("");
+        //CONVERSÃO DATA
+        LocalDate hoje = LocalDate.now();
+        //LocalDate.now()
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        jTextFieldData.setText(hoje.format(formatter));
         jTextFieldValor.setText("");
         jTextFieldIdMovimento.setEnabled(true);
         
