@@ -9,8 +9,11 @@ import controle.ControleMovimentacao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+//IMPORTAR DATA ATUAL
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 
 
 
@@ -24,8 +27,12 @@ public class TelaMovimento extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        
-        jTextFieldData.setText("05/12/2025");
+        //CONVERSÃO DATA
+        LocalDate hoje = LocalDate.now();
+        //LocalDate.now()
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        jTextFieldData.setText(hoje.format(formatter));
+
         
         exibirMovimentacoes();
         //jButtonLimpar.setEnabled(false);
@@ -624,7 +631,11 @@ public class TelaMovimento extends javax.swing.JFrame {
         jTextFieldIdVeiculo.setText("");
         jTextFieldIdTipoDespesa.setText("");
         jTextFieldDescricao.setText("");
-        jTextFieldData.setText("");
+        //CONVERSÃO DATA
+        LocalDate hoje = LocalDate.now();
+        //LocalDate.now()
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        jTextFieldData.setText(hoje.format(formatter));
         jTextFieldValor.setText("");
         jTextFieldIdMovimento.setEnabled(true);
     }//GEN-LAST:event_jButtonLimparActionPerformed
