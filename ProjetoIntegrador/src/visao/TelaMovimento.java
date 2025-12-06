@@ -549,11 +549,17 @@ public class TelaMovimento extends javax.swing.JFrame {
             
             
             jTextFieldDescricao.setText("");
+            jTextFieldIdMovimento.setText("");
             jTextFieldData.setText("");
             jTextFieldValor.setText("");
             
             
             JOptionPane.showMessageDialog(this, "Atualização feita!");
+            jButtonLimpar.setEnabled(false);
+            jButtonAlterar.setEnabled(false);
+            jButtonDeletar.setEnabled(false);
+            
+            
             jTextFieldIdMovimento.setEnabled(true);
             exibirMovimentacoes();
             
