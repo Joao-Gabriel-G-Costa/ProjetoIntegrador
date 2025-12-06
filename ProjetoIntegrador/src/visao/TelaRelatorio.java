@@ -147,7 +147,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
             //Linhas
             for (String[] linha : linhas) {
                 for (String valor : linha) {
-                    table.addCell(new Paragraph(valor, cellFont));
+                    table.addCell(new Paragraph("R$ "+valor, cellFont));
                 }
             }
 
@@ -645,21 +645,27 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
             
         //2 DESPESAS DE UM VEÍCULO
         } else if ("Despesas de um veículo".equals(tipo)) {
-            //veiculo selecionado pelo usuario (colocar split para separar)
+            //veiculo selecionado pelo usuario (colocar split para separar ID de Marca)
             String selecionado = (String) cbVariavel.getSelectedItem();
-            
-            //pegar so o id !!
-            String selecId = selecionado.split(" - ")[0];
+
             
             
             if (selecionado == null || selecionado.equals("Selecione um veículo")) {
                 JOptionPane.showMessageDialog(this, "Selecione um veículo!");
                 return;
             }
+            
+            //pegar so o id !!
+            String[] partes = selecionado.split(" - ");
+            String selecId = partes[0];
+            String modelo = partes[1];
+           
             int idVeiculo = Integer.parseInt(selecId);
+            
+            
             resultado = prepararRelatorioDespesasVeiculo(idVeiculo);
-            nomeArquivo = "despesas_veiculo_" + idVeiculo + ".pdf";
-            tituloRelatorio = "Despesas do Veículo (ID: " + idVeiculo + ")";
+            nomeArquivo = "despesas_veiculo_ID" + idVeiculo + "_" + modelo + ".pdf";
+            tituloRelatorio = "Despesas do Veículo: " + modelo;
             
         //3 TOTAL GERAL DE DESPESAS DA FROTA NO MÊS
         } else if ("Total geral de despesas da frota no mês".equals(tipo)) {
