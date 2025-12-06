@@ -17,10 +17,18 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Image;
+    //linha
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import com.itextpdf.text.Chunk;
+
+
+
 
 import javax.swing.JOptionPane;
 import java.io.FileOutputStream;
 import java.io.File;
+
 
 public class TelaRelatorio extends javax.swing.JFrame {
     
@@ -122,6 +130,20 @@ public class TelaRelatorio extends javax.swing.JFrame {
             rect.setBorderColor(BaseColor.RED);
             rect.setBorderWidth(20);
             document.add(rect);
+            
+             //IMAGEM
+            Image img = Image.getInstance("src/icons/logoICON.jpg");
+            img.scaleToFit(120,120);
+            img.setAlignment(Element.ALIGN_CENTER);
+            
+            document.add(img);
+            //document.add(new Paragraph(" "));
+            
+            //LINHA ANTES DA TABELA
+            LineSeparator linhaIcon = new LineSeparator();
+            linhaIcon.setLineColor(BaseColor.BLACK);
+            document.add(new Chunk(linhaIcon));
+            
 
             //TÍTULO
             Font tituloFont = new Font(Font.FontFamily.HELVETICA, 30, Font.BOLD);
@@ -147,7 +169,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
             //Linhas
             for (String[] linha : linhas) {
                 for (String valor : linha) {
-                    table.addCell(new Paragraph("R$ "+valor, cellFont));
+                    table.addCell(new Paragraph(valor, cellFont));
                 }
             }
 
@@ -155,10 +177,26 @@ public class TelaRelatorio extends javax.swing.JFrame {
 
             //Mostra TOTAL caso exista
             if (totalOpcional != null) {
-                document.add(new Paragraph(" "));
+                document.add(new Paragraph("" ));
+             
                 Font totalFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-                document.add(new Paragraph("Total: R$ " + totalOpcional, totalFont));
+                
+                Paragraph totalTexto = new Paragraph("Total: R$ " + totalOpcional, totalFont);
+                totalTexto.setAlignment(Element.ALIGN_CENTER);
+                document.add(new Paragraph(" "));
+                document.add(totalTexto);
+                
+                
+               
             }
+            
+            //LINHA DEPOIS
+            LineSeparator linha2 = new LineSeparator();
+            linha2.setLineColor(BaseColor.BLACK);
+            document.add(new Chunk(linhaIcon));
+            
+ 
+            
 
             document.close();
             JOptionPane.showMessageDialog(this, "PDF gerado com sucesso em: " + caminhoArquivo);
