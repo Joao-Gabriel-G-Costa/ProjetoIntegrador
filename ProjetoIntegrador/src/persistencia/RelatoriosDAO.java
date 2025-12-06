@@ -2,12 +2,10 @@
 package persistencia;
 
 import modelos.interfaces.IRelatorios;
-import persistencia.VeiculosDAO;
 import modelos.classes.Veiculos;
 import modelos.classes.Movimentacao;
 import modelos.classes.Despesas; 
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

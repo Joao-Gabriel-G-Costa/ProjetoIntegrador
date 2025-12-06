@@ -30,10 +30,14 @@ public class TelaVeiculos extends javax.swing.JFrame {
         
         jButtonAlterar.setEnabled(false);
         jButtonDeletar.setEnabled(false);
-        //jButtonLimpar.setEnabled(false);
+        jButtonLimpar.setEnabled(false);
         
         jTableSaida.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
+            jButtonLimpar.setEnabled(true);
+            jButtonAlterar.setEnabled(true);
+            jButtonDeletar.setEnabled(true);
+            
             exibirDadosSelecionados();
         }
         
@@ -98,19 +102,21 @@ public class TelaVeiculos extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jButtonVoltar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonVoltar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(164, 164, 164)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(146, 146, 146)
                 .addComponent(jButtonVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -329,10 +335,11 @@ public class TelaVeiculos extends javax.swing.JFrame {
                         .addComponent(jLabel6)
                         .addComponent(jTextFieldAnoFabricacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonRegistrar)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonDeletar)
-                    .addComponent(jButtonAlterar))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonRegistrar)
+                        .addComponent(jButtonAlterar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonLimpar)
@@ -390,12 +397,13 @@ public class TelaVeiculos extends javax.swing.JFrame {
             jTextFieldMarca.setText("");
             jTextFieldModelo.setText("");
             jTextFieldAnoFabricacao.setText("");
+            
 
             JOptionPane.showMessageDialog(this, "Veículo cadastrado com sucesso!");
             
             jTextFieldIDVeiculo.setEnabled(true);
-            jButtonAlterar.setEnabled(false);
             jButtonDeletar.setEnabled(false);
+            jButtonLimpar.setEnabled(false);
              
             
             exibirVeiculos();
@@ -422,6 +430,8 @@ public class TelaVeiculos extends javax.swing.JFrame {
             
             jButtonDeletar.setEnabled(false);
             
+            
+            
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(rootPane, "Verifique os campos!");
         }
@@ -430,6 +440,7 @@ public class TelaVeiculos extends javax.swing.JFrame {
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
         // TODO add your handling code here:
         try {
+            
             if(jTextFieldIDVeiculo.getText().isEmpty()){throw new Exception("O ID não pode ser nulo");}
             int id = Integer.parseInt(jTextFieldIDVeiculo.getText());
             String placa = jTextFieldPlaca.getText().toUpperCase();
@@ -446,11 +457,15 @@ public class TelaVeiculos extends javax.swing.JFrame {
             jTextFieldMarca.setText("");
             jTextFieldModelo.setText("");
             jTextFieldAnoFabricacao.setText("");
-            jTextFieldIDVeiculo.setEnabled(true);
+            
             JOptionPane.showMessageDialog(this, "Veículo atualizado com sucesso!");
+            jTextFieldIDVeiculo.setEnabled(true);
 
             exibirVeiculos();
+            jButtonDeletar.setEnabled(false);
             jButtonAlterar.setEnabled(false);
+            jButtonLimpar.setEnabled(false);
+            
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(this, erro.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -509,6 +524,8 @@ public class TelaVeiculos extends javax.swing.JFrame {
         jTextFieldIDVeiculo.setEnabled(true);
         
         jButtonLimpar.setEnabled(false);
+        jButtonAlterar.setEnabled(false);
+        jButtonDeletar.setEnabled(false);
 
         
         exibirVeiculos();
@@ -560,8 +577,7 @@ public class TelaVeiculos extends javax.swing.JFrame {
         jTextFieldAnoFabricacao.setText(anoFabricacao);
         jComboSituacao.setSelectedItem(situacao);
         
-        jButtonAlterar.setEnabled(true);
-        jButtonDeletar.setEnabled(true);
+        
     }
      }
 

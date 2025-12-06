@@ -1,7 +1,6 @@
 package controle;
 
 import persistencia.DespesasDAO;
-import modelos.classes.Despesas.*;
 import java.util.ArrayList;
 import modelos.classes.Despesas;
 import modelos.interfaces.IDespesasCRUD;

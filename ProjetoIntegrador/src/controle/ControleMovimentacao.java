@@ -2,12 +2,8 @@ package controle;
 
 import persistencia.MovimentacaoDAO;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import modelos.classes.Movimentacao;
 import modelos.interfaces.IMovimentacaoCRUD;
-//import java.time.LocalDate;
-//import java.time.format.DateTimeFormatter;
-//import java.time.format.DateTimeParseException;
 
 public class ControleMovimentacao implements IMovimentacaoCRUD {
 
@@ -95,6 +91,9 @@ public class ControleMovimentacao implements IMovimentacaoCRUD {
             }
             if (mov.getValor() <= 0) {
                 throw new Exception("O valor deve ser maior que zero!");
+            }
+            if(mov.getDescricao() == null || mov.getDescricao().trim().isEmpty()){
+                throw new Exception("A Descrição não pode estar vazia!");
             }
 
             Movimentacao existente = dao.buscarPorId(mov.getIdMovimentacao());

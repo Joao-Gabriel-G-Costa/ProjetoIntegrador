@@ -11,9 +11,19 @@ public class ControleVeiculos implements IVeiculosCRUD {
     private VeiculosDAO dao = new VeiculosDAO();
 
     public ControleVeiculos() {}
+    
+    public void validarAnoFab(String anoFabricacao) throws Exception{ 
+        try {
+            int ano = 0;
+            ano = Integer.parseInt(anoFabricacao.trim());
+        } catch (NumberFormatException e) {
+            throw new Exception("O ano deve ser um número inteiro!");
+        }
+    }
 
     @Override
     public void salvar(Veiculos veiculo) throws Exception {
+        validarAnoFab(veiculo.getAnoFabricacao());
         try {
             // Validações
             if (veiculo.getIdVeiculo() <= 0) {
@@ -57,6 +67,7 @@ public class ControleVeiculos implements IVeiculosCRUD {
 
     @Override
     public void atualizar(Veiculos veiculo) throws Exception {
+        validarAnoFab(veiculo.getAnoFabricacao());
         try {
             if (veiculo.getPlaca() == null || veiculo.getPlaca().trim().isEmpty()) {
                 throw new Exception("A placa não pode estar vazia!");
