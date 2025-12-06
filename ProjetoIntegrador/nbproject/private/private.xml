@@ -6,11 +6,8 @@
             <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaMovimento.java</file>
             <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleMovimentacao.java</file>
             <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/bancodeDados/BancoMovimento.txt</file>
-            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/MovimentacaoDAO.java</file>
-            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/RelatoriosDAO.java</file>
+            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaVeiculos.java</file>
             <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaRelatorio.java</file>
-            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/bancodeDados/BancoVeiculos.txt</file>
-            <file>file:/C:/PI/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/VeiculosDAO.java</file>
         </group>
     </open-files>
 </project-private>

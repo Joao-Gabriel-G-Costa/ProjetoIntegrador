@@ -66,7 +66,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
                 
                 ArrayList<Veiculos> lista = controle.listarVeiculosParaCombo();
                 for (Veiculos v : lista) {
-                    cbVariavel.addItem(String.valueOf(v.getIdVeiculo()));
+                    cbVariavel.addItem(String.valueOf(v.getIdVeiculo() + " - "+ v.getModelo()));
                 }
                 
                 
@@ -104,7 +104,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
         }
     }
     
-    // Método para gerar PDF (mantido, mas agora recebe objetos do controle)
+    // Método para gerar PDF 
     private void gerarPdf(String caminhoArquivo,
                           String tituloRelatorio,
                           String[] colunas,
@@ -270,12 +270,12 @@ private ResultadoFormatado prepararRelatorioDespesasMes(int mes) {
             Despesas d = despDAO.buscarPorId(m.getIdDespesa());
             String tipoDespesa = (d != null) ? d.getDescricao() : "Não encontrado";
 
-            // Veículo
+            
             Veiculos v = null;
             try {
                 v = controle.buscarVeiculoPorId(m.getIdVeiculo());
             } catch (Exception e) {
-                // Se não encontrar, continua
+               
             }
             String modelo = (v != null) ? v.getModelo() : "Não encontrado";
 
@@ -645,12 +645,18 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
             
         //2 DESPESAS DE UM VEÍCULO
         } else if ("Despesas de um veículo".equals(tipo)) {
+            //veiculo selecionado pelo usuario (colocar split para separar)
             String selecionado = (String) cbVariavel.getSelectedItem();
+            
+            //pegar so o id !!
+            String selecId = selecionado.split(" - ")[0];
+            
+            
             if (selecionado == null || selecionado.equals("Selecione um veículo")) {
                 JOptionPane.showMessageDialog(this, "Selecione um veículo!");
                 return;
             }
-            int idVeiculo = Integer.parseInt(selecionado);
+            int idVeiculo = Integer.parseInt(selecId);
             resultado = prepararRelatorioDespesasVeiculo(idVeiculo);
             nomeArquivo = "despesas_veiculo_" + idVeiculo + ".pdf";
             tituloRelatorio = "Despesas do Veículo (ID: " + idVeiculo + ")";

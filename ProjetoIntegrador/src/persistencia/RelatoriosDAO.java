@@ -21,7 +21,7 @@ public class RelatoriosDAO implements IRelatorios {
     
     @Override
     public ArrayList<Veiculos> listarVeiculosParaCombo() throws Exception {
-        return listarVeiculos(); // Pode adicionar lógica específica se necessário
+        return listarVeiculos(); 
     }
     
     @Override
