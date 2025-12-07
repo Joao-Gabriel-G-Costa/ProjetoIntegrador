@@ -1,4 +1,3 @@
-
 package modelos.interfaces;
 
 import java.util.ArrayList;

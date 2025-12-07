@@ -10,10 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.classes.Despesas;
 
-/**
- *
- * @author joaocosta
- */
 public class TelaSelecionarDespesa extends javax.swing.JFrame {
     private TelaMovimento telaMovimento;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaSelecionarDespesa.class.getName());

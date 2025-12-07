@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package persistencia;
 import java.util.ArrayList;
 import modelos.classes.Despesas;
@@ -12,10 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import modelos.interfaces.IDespesasCRUD;
 
-/**
- *
- * @author ejmcc
- */
+
 public class DespesasDAO implements IDespesasCRUD{
   //Atributos
   private String nomeDoArquivoNoDisco = null;

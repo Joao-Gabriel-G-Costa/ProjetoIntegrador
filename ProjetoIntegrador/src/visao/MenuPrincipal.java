@@ -6,11 +6,7 @@
 
 package visao;
 
-
-/**
- *
- * @author eugeniojulio
- */     
+  
 public class MenuPrincipal extends javax.swing.JFrame {
 
     /**

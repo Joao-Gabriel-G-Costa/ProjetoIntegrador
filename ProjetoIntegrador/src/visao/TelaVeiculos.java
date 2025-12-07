@@ -17,10 +17,7 @@ import modelos.classes.Veiculos;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
-/**
- *
- * @author eugeniojulio
- */
+
 public class TelaVeiculos extends javax.swing.JFrame {
     ControleVeiculos controle = new ControleVeiculos();
 

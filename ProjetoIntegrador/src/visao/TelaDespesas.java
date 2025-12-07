@@ -12,10 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.classes.Despesas;
 
-/**
- *
- * @author eugeniojulio
- */
+
 public class TelaDespesas extends javax.swing.JFrame {
     ControleDespesas controle = new ControleDespesas();
 
@@ -461,7 +458,6 @@ public class TelaDespesas extends javax.swing.JFrame {
         
         exibirDespesasNaTabela();
     }//GEN-LAST:event_jButtonLimparActionPerformed
-    // Cuidado!!!!!!!!
     private void exibirDespesasNaTabela() {
     try {
         DespesasDAO dao = new DespesasDAO();
@@ -479,7 +475,6 @@ public class TelaDespesas extends javax.swing.JFrame {
     
     
 }
-    // Cuidado!!!!!!!!
     private void exibirDadosSelecionados() {
     int linhaSelecionada = jTableSaida.getSelectedRow();
     if (linhaSelecionada != -1) { // Garante que uma linha está realmente selecionada
