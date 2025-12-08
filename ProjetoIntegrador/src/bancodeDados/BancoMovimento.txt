@@ -19,3 +19,6 @@
 28;5;1;Abastecimento;10/12/2025;155.0;
 29;5;3;Lavagem interna;11/12/2025;40.0;
 30;2;4;Alta velocidade;06/12/2025;130.9;
+1;4;4;Alta Velocidade;08/12/2025;150.0
+2;4;4;Contra mão;08/12/2025;180.0
+3;4;4;Documentação;08/12/2025;450.0

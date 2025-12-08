@@ -36,6 +36,7 @@ public class TelaVeiculos extends javax.swing.JFrame {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
         jTextFieldAnoFabricacao.setText(hoje.format(formatter));
         
+        
         jButtonAlterar.setEnabled(false);
         jButtonDeletar.setEnabled(false);
         jButtonLimpar.setEnabled(false);
@@ -168,6 +169,11 @@ public class TelaVeiculos extends javax.swing.JFrame {
         jComboSituacao.setBackground(new java.awt.Color(204, 204, 204));
         jComboSituacao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jComboSituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Inativo" }));
+        jComboSituacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboSituacaoActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -548,6 +554,11 @@ public class TelaVeiculos extends javax.swing.JFrame {
         // TODO add your handling code here:
        
     }//GEN-LAST:event_jTextFieldAnoFabricacaoActionPerformed
+
+    private void jComboSituacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSituacaoActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jComboSituacaoActionPerformed
 
     private void exibirVeiculos() {
      try {

@@ -181,13 +181,15 @@ public class TelaRelatorio extends javax.swing.JFrame {
              
                 Font totalFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
                 
-                Paragraph totalTexto = new Paragraph("Total: R$ " + totalOpcional, totalFont);
+                //formatação do valor
+                String totalFormatado = String.format("%.2f", totalOpcional);
+                
+                
+                Paragraph totalTexto = new Paragraph("Total: R$ " + totalFormatado, totalFont);
                 totalTexto.setAlignment(Element.ALIGN_CENTER);
                 document.add(new Paragraph(" "));
                 document.add(totalTexto);
-                
-                
-               
+                  
             }
             
             //LINHA DEPOIS
@@ -263,7 +265,7 @@ public class TelaRelatorio extends javax.swing.JFrame {
                     String.valueOf(m.getIdVeiculo()),
                     tipoDespesa,
                     m.getDescricao(),
-                    String.valueOf(m.getValor())
+                    String.valueOf("R$ "+m.getValor())
                 });
             }
 
@@ -322,7 +324,7 @@ private ResultadoFormatado prepararRelatorioDespesasMes(int mes) {
                 modelo,
                 tipoDespesa,
                 m.getData(),
-                String.valueOf(m.getValor())
+                String.valueOf("R$ "+m.getValor())
             });
         }
 
@@ -364,7 +366,7 @@ private ResultadoFormatado prepararRelatorioCombustivelMes(int mes) {
                 modelo,
                 m.getData(),
                 m.getDescricao(),
-                String.valueOf(m.getValor())
+                String.valueOf("R$ "+m.getValor())
             });
         }
 
@@ -406,7 +408,7 @@ private ResultadoFormatado prepararRelatorioIpvaAno(int ano) {
                 modelo,
                 String.valueOf(ano),
                 m.getData(),
-                String.valueOf(m.getValor())
+                String.valueOf("R$ "+m.getValor())
             });
         }
 
@@ -448,7 +450,7 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
                 modelo,
                 m.getData(),
                 m.getDescricao(),
-                String.valueOf(m.getValor())
+                String.valueOf("R$ "+m.getValor())
             });
         }
 
@@ -683,7 +685,9 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
             
         //2 DESPESAS DE UM VEÍCULO
         } else if ("Despesas de um veículo".equals(tipo)) {
+            
             //veiculo selecionado pelo usuario (colocar split para separar ID de Marca)
+            
             String selecionado = (String) cbVariavel.getSelectedItem();
 
             
@@ -743,21 +747,34 @@ private ResultadoFormatado prepararRelatorioMultasVeiculoAno(int idVeiculo, int 
         //6 MULTAS PAGAS POR VEÍCULO NO ANO
         } else if ("Multas pagas por veículo no ano".equals(tipo)) {
             String selecionado = (String) cbVariavel.getSelectedItem();
+            
+            
             if (selecionado == null || selecionado.equals("Selecione um veículo")) {
                 JOptionPane.showMessageDialog(this, "Selecione um veículo!");
                 return;
             }
-            int idVeiculo = Integer.parseInt(selecionado);
+            
+            
+            //pegar so o id !!
+            String[] partes = selecionado.split(" - ");
+            String selecId = partes[0];
+            String modelo = partes[1];
+                       
+            int idVeiculo = Integer.parseInt(selecId);
+            
             
             String anoStr = JOptionPane.showInputDialog(this, "Informe o ano (ex: 2024):");
             if (anoStr == null || anoStr.trim().isEmpty()) {
                 return;
             }
+            
             int ano = Integer.parseInt(anoStr.trim());
+            
+            
             
             resultado = prepararRelatorioMultasVeiculoAno(idVeiculo, ano);
             nomeArquivo = "multas_veiculo_" + idVeiculo + "_ano_" + ano + ".pdf";
-            tituloRelatorio = "Multas do Veículo (ID: " + idVeiculo + ") - Ano " + ano;
+            tituloRelatorio = "Multas do Veículo "+ modelo + " - Ano " + ano;
             
         } else {
             JOptionPane.showMessageDialog(this, "Tipo de relatório não implementado!");
