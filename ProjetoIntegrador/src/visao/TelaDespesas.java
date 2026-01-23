@@ -173,6 +173,11 @@ public class TelaDespesas extends javax.swing.JFrame {
 
         jTextFieldDescricao.setBackground(new java.awt.Color(204, 204, 204));
         jTextFieldDescricao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jTextFieldDescricao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldDescricaoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -352,6 +357,10 @@ public class TelaDespesas extends javax.swing.JFrame {
     }
 
     }//GEN-LAST:event_jButtonExcluirActionPerformed
+
+    private void jTextFieldDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDescricaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldDescricaoActionPerformed
     
     // Cuidado!!!!!!!!
     private void exibirDespesasNaTabela() {
