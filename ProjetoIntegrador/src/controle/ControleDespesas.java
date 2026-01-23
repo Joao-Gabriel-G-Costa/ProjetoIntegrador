@@ -1,7 +1,6 @@
 package controle;
 
 import persistencia.DespesasDAO;
-import modelos.classes.Despesas.*;
 import java.util.ArrayList;
 import modelos.classes.Despesas;
 import modelos.interfaces.IDespesasCRUD;
@@ -61,6 +60,7 @@ public class ControleDespesas implements IDespesasCRUD {
 
     @Override
     public void remover(int idTipoDeDespesa) throws Exception {
+        
         dao.remover(idTipoDeDespesa);
     }
 

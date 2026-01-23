@@ -3,9 +3,33 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/heloi/Documents/GitHub/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/RelatoriosDAO.java</file>
             <file>file:/C:/Users/heloi/Documents/GitHub/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaRelatorio.java</file>
             <file>file:/C:/Users/heloi/Documents/GitHub/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaMovimento.java</file>
+=======
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/bancodeDados/BancoVeiculos.txt</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaRelatorio.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/VeiculosDAO.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/RelatoriosDAO.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaDespesas.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/visao/TelaVeiculos.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/bancodeDados/BancoMovimento.txt</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleDespesas.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleMovimentacao.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleVeiculos.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/modelos/classes/Despesas.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/modelos/classes/Movimentacao.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/modelos/classes/Veiculos.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/modelos/interfaces/IDespesasCRUD.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/DespesasDAO.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/persistencia/MovimentacaoDAO.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/visao/MenuPrincipal.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/modelos/interfaces/IRelatorios.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/controle/ControleRelatorios.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/modelos/interfaces/IMovimentacaoCRUD.java</file>
+            <file>file:/C:/Users/Admin/Documents/ProjetoIntegrador/ProjetoIntegrador/src/bancodeDados/BancoDespesas.txt</file>
+>>>>>>> de8c9888b88749e3a9d0a4a52fa57ec25b2262f6
         </group>
     </open-files>
 </project-private>

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 23;PRU390;CHEVROLET;2015;2015;true
 123;LOIH7G;FIAT;FUSCA;1974;true
 55;123;asdas;asdasd;12131;false
@@ -10,3 +11,15 @@
 20;56ONT;TESTE;TESTANDO;2015;true
 59;ONT785;TESTANDO;TESTE;2016;true
 >>>>>>> 05086db0b7258407c33dc9217e45c0a49a0421df
+=======
+1;8272B;RENAULT;KWID;2010;false
+2;ZXC4K55;Mercedes-Benz;Sprinter;2019;true
+3;PQR8J90;Nissan;Versa;2020;true
+4;TUV6H12;Hyundai;HB20;2022;false
+5;QRS3T98;Fiat;Argo;2021;false
+6;ABC1D23;Toyota;Corolla;2020;true
+7;XYZ9K88;Honda;Civic;2019;true
+8;JKL4M56;Chevrolet;Onix;2022;true
+9;MNO7P12;Volkswagen;Gol;2018;false
+10;QRS3T98;Fiat;Argo;2021;false
+>>>>>>> de8c9888b88749e3a9d0a4a52fa57ec25b2262f6

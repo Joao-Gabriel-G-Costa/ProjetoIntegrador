@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package persistencia;
 import java.util.ArrayList;
 import modelos.classes.Movimentacao;
@@ -13,16 +9,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 
-/**
- *
- * @author alice
- */
 public class MovimentacaoDAO implements IMovimentacaoCRUD {
     
     private String nomeDoArquivoNoDisco = null;
 
     public MovimentacaoDAO() {
-        nomeDoArquivoNoDisco = "./src/bancodedados/BancoMovimento.txt";
+        nomeDoArquivoNoDisco = "./src/bancodeDados/BancoMovimento.txt";
     }
 
     @Override
@@ -117,11 +109,14 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
 
             FileWriter fw = new FileWriter(nomeDoArquivoNoDisco);
             BufferedWriter bw = new BufferedWriter(fw);
+            
 
             for (Movimentacao obj : lista) {
                 if (obj.getIdMovimentacao()== movimentacoes.getIdMovimentacao()) {
                     bw.write(
                         movimentacoes.getIdMovimentacao() + ";" +
+                        movimentacoes.getIdVeiculo() + ";" +
+                        movimentacoes.getIdDespesa() + ";" +
                         movimentacoes.getDescricao()+ ";" + 
                         movimentacoes.getData()+ ";" +
                         movimentacoes.getValor()+ "\n"
@@ -129,6 +124,8 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
                 } else {
                     bw.write(
                         obj.getIdMovimentacao()+ ";" +
+                        obj.getIdVeiculo() + ";" +
+                        obj.getIdDespesa() + ";" +
                         obj.getDescricao() + ";" +
                         obj.getData()+ ";" +
                         obj.getValor()+ ";" + "\n"
@@ -144,19 +141,20 @@ public class MovimentacaoDAO implements IMovimentacaoCRUD {
 
     @Override
     public void remover(int idMovimentacao) throws Exception {
-         try {
+        try {
             ArrayList<Movimentacao> lista = this.listaDeMovimentacoes();
 
-            FileWriter fw = new FileWriter(nomeDoArquivoNoDisco);
-            BufferedWriter bw = new BufferedWriter(fw);
+            BufferedWriter bw = new BufferedWriter(new FileWriter(nomeDoArquivoNoDisco));
 
-            for (Movimentacao movimentacoes : lista) {
-                if (movimentacoes.getIdMovimentacao() != idMovimentacao) {
+            for (Movimentacao obj : lista) {
+                if (obj.getIdMovimentacao() != idMovimentacao) {
                     bw.write(
-                        movimentacoes.getIdMovimentacao() + ";" +
-                        movimentacoes.getDescricao()+ ";" + 
-                        movimentacoes.getData()+ ";" +
-                        movimentacoes.getValor()+ "\n"
+                        obj.getIdMovimentacao() + ";" +
+                        obj.getIdVeiculo() + ";" +
+                        obj.getIdDespesa() + ";" +
+                        obj.getDescricao() + ";" +
+                        obj.getData() + ";" +
+                        obj.getValor() + "\n"
                     );
                 }
             }
