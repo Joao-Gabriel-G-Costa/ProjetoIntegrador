@@ -1,1 +1,8 @@
 /ProjetoIntegrador/dist/
+
+# Arquivos gerados pelo NetBeans e Ant
+**/build/
+**/dist/
+**/nbproject/private/
+*.class
+*.asta.lock
